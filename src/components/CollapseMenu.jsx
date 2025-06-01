@@ -1,3 +1,4 @@
+// CollapseMenu.jsx
 import React, { useState } from "react";
 import {
   Checkbox,
@@ -7,821 +8,339 @@ import {
   Collapse,
   Slider,
   TextField,
+  Typography, // For section titles or labels if needed
+  Box,      // For layout
 } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 
-function CollapseMenu() {
-  const [boatTypeOpen, setBoatTypeOpen] = useState(false);
-  const [brandOpen, setBrandOpen] = useState(false);
-  const [modeOpen, setModeOpen] = useState(false);
-  const [lengthOpen, setLengthOpen] = useState(false);
-  const [priceOpen, setPriceOpen] = useState(false);
-  const [yearOpen, setYearOpen] = useState(false);
-  const [engineTypeOpen, setEngineTypeOpen] = useState(false);
-  const [promotionsOpen, setPromotionsOpen] = useState(false);
-  const [priceRange, setPriceRange] = useState([16200, 400000]);
-  const [advancedOpen, setAdvancedOpen] = useState(false);
-  const [onlineTourOpen, setOnlineTourOpen] = useState(false);
-  const [fuelTypeOpen, setFuelTypeOpen] = useState(false);
-  const [fuelMin, setFuelMin] = useState(0);
-  const [fuelMax, setFuelMax] = useState(0);
-  const [fuelTankOpen, setFuelTankOpen] = useState(false);
-  const [fuelTankMin, setFuelTankMin] = useState(0);
-  const [fuelTankMax, setFuelTankMax] = useState(0);
-  const [beamOpen, setBeamOpen] = useState(false);
-  const [beamMin, setBeamMin] = useState(0);
-  const [beamMax, setBeamMax] = useState(0);
-  const [draftOpen, setDraftOpen] = useState(false);
-  const [draftMin, setDraftMin] = useState(0);
-  const [draftMax, setDraftMax] = useState(0);
-  const [rangeOpen, setRangeOpen] = useState(false);
-  const [rangeMin, setRangeMin] = useState(0);
-  const [rangeMax, setRangeMax] = useState(0);
-  const [dryWeightOpen, setDryWeightOpen] = useState(false);
-  const [dryWeightMin, setDryWeightMin] = useState(0);
-  const [dryWeightMax, setDryWeightMax] = useState(0);
+// Helper to format numbers with commas for display in TextFields
+const formatNumber = (num) => {
+  if (num === null || typeof num === 'undefined' || num === "") return "";
+  return Number(num).toLocaleString();
+};
+
+const parseInputNumber = (str) => {
+  if (str === null || typeof str === 'undefined' || str === "") return "";
+  return str.replace(/[^0-9.]/g, ""); // Allow decimals for some fields
+};
+
+
+function CollapseMenu({ filters, onFilterChange, wordpressFilters }) {
+  // Local UI state for collapse panels
+  const [openSections, setOpenSections] = useState({
+    price: true, // Keep price open by default
+    boat_condition: false, // Explicitly for "Condition" if using wordpressFilters.boat_condition
+    boat_type: false,
+    make: false, // For Brand
+    lengthRange: false,
+    year: false,
+    engine_type: false,
+    promotions: false,
+    online_tour: false,
+    fuel_type: false,
+    fuelTankCapacityRange: false,
+    beamRange: false,
+    draftRange: false,
+    rangeRange: false,
+    dryWeightRange: false,
+  });
+
+  const toggleSection = (sectionName) => {
+    setOpenSections(prev => ({ ...prev, [sectionName]: !prev[sectionName] }));
+  };
+
 
   const handlePriceChange = (event, newValue) => {
-    setPriceRange(newValue);
+    onFilterChange("priceRange", newValue);
   };
 
-  const handleMinInputChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setPriceRange([value, priceRange[1]]);
+  const handleMinPriceInputChange = (e) => {
+    const rawValue = e.target.value.replace(/[^0-9]/g, "");
+    const value = rawValue === "" ? 0 : Number(rawValue);
+    const currentMax = filters.priceRange?.[1] || 0;
+    if (value <= currentMax) {
+        onFilterChange("priceRange", [value, currentMax]);
+    } else {
+        onFilterChange("priceRange", [currentMax, value]); // Swap if min exceeds max
+    }
   };
 
-  const handleMaxInputChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setPriceRange([priceRange[0], value]);
+  const handleMaxPriceInputChange = (e) => {
+    const rawValue = e.target.value.replace(/[^0-9]/g, "");
+    const value = rawValue === "" ? 0 : Number(rawValue);
+    const currentMin = filters.priceRange?.[0] || 0;
+     if (value >= currentMin) {
+        onFilterChange("priceRange", [currentMin, value]);
+    } else {
+        onFilterChange("priceRange", [value, currentMin]); // Swap if max is less than min
+    }
   };
 
-  const handleFuelMinChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setFuelMin(value);
+
+  // Generic handler for min/max numeric range filters (Length, Fuel Tank, Beam, Draft, Range, Dry Weight)
+  const handleMinMaxChange = (filterKey, type) => (e) => {
+    const rawValue = e.target.value.replace(/[^0-9.]/g, ""); // Allow decimal
+    const value = rawValue === "" ? 0 : Number(rawValue); // Treat empty as 0 for processing
+    
+    const currentRange = filters[filterKey] || [0, 0];
+    let newMin = currentRange[0];
+    let newMax = currentRange[1];
+
+    if (type === "min") {
+      newMin = value;
+    } else { // type === "max"
+      newMax = value;
+    }
+    
+    // Ensure min is not greater than max if both are specified and max is not 0 (meaning unbounded)
+    if (type === "min" && newMax !== 0 && value > newMax) {
+        newMin = newMax; // or swap: newMax = value;
+    }
+    if (type === "max" && value !== 0 && value < newMin) {
+        newMax = newMin; // or swap: newMin = value;
+    }
+
+
+    onFilterChange(filterKey, [newMin, newMax]);
   };
 
-  const handleFuelMaxChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setFuelMax(value);
+  // Helper to get array from wordpressFilters or default
+  const getFilterOptions = (key) => {
+    const options = wordpressFilters && wordpressFilters[key];
+    return Array.isArray(options) ? options : [];
   };
 
-  const handleFuelTankMinChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setFuelTankMin(value);
-  };
+  const renderCollapsibleSection = (title, sectionKey, content) => (
+    <div className="mt-3 pt-3 border-t border-gray-200 first:mt-0 first:pt-0 first:border-t-0"> {/* Adjusted styling */}
+      <div
+        className="flex items-center justify-between cursor-pointer pb-2" // Adjusted padding
+        onClick={() => toggleSection(sectionKey)}
+      >
+        <h3 className="text-gray-800 text-[17px] font-medium">{title}</h3> {/* Adjusted font */}
+        <IconButton
+          size="small" // Made icon button smaller
+          sx={{ border: "1px solid #00000022", borderRadius: "50%", padding: '4px' }} // Adjusted border and padding
+        >
+          {openSections[sectionKey] ? <RemoveIcon fontSize="small" /> : <AddIcon fontSize="small" />}
+        </IconButton>
+      </div>
+      <Collapse in={openSections[sectionKey]}>
+        <Box pt={1.5} pb={1}> {/* Added padding to content area */}
+         {content}
+        </Box>
+      </Collapse>
+    </div>
+  );
 
-  const handleFuelTankMaxChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setFuelTankMax(value);
-  };
+  const renderCheckboxFilter = (optionsKey, filterPropKey, dynamicFilterKey) => (
+    <FormGroup>
+      {getFilterOptions(optionsKey).map((optionValue) => (
+        <FormControlLabel
+          key={optionValue}
+          control={
+            <Checkbox
+              sx={{ color: "#00000080", '&.Mui-checked': { color: '#2C4371' } }}
+              checked={
+                filterPropKey === "selectedConditions"
+                  ? filters.selectedConditions?.includes(optionValue) || false
+                  : filters.selectedDynamicFilters?.[dynamicFilterKey]?.includes(String(optionValue)) || false
+              }
+              onChange={(e) => {
+                if (filterPropKey === "selectedConditions") {
+                  onFilterChange("selectedConditions", optionValue, e.target.checked);
+                } else {
+                  onFilterChange("selectedDynamicFilters", {
+                    key: dynamicFilterKey,
+                    value: String(optionValue), // Ensure value is string for consistency
+                    checked: e.target.checked,
+                  });
+                }
+              }}
+              size="small"
+            />
+          }
+          label={<Typography variant="body2" sx={{color: "black"}}>{String(optionValue)}</Typography>} // Ensure label is string
+        />
+      ))}
+    </FormGroup>
+  );
+  
+  const renderRangeFilterInputs = (filterKey, unit) => (
+     <div className="flex gap-3 mt-2"> {/* Adjusted gap */}
+        <div style={{ flex: 1 }}>
+          <Typography variant="caption" display="block" gutterBottom sx={{ color: "#00000099", fontSize: '13px' }}>Min{unit ? ` (${unit})` : ''}:</Typography>
+          <TextField
+            variant="outlined"
+            size="small"
+            value={filters[filterKey]?.[0] ? formatNumber(filters[filterKey]?.[0]) : ""}
+            onChange={handleMinMaxChange(filterKey, "min")}
+            InputProps={{ sx: { fontSize: '14px', borderRadius: '6px' } }} // Adjusted font size and border radius
+            fullWidth
+            placeholder="0"
+          />
+        </div>
+        <div style={{ flex: 1 }}>
+          <Typography variant="caption" display="block" gutterBottom sx={{ color: "#00000099", fontSize: '13px' }}>Max{unit ? ` (${unit})` : ''}:</Typography>
+          <TextField
+            variant="outlined"
+            size="small"
+            value={filters[filterKey]?.[1] ? formatNumber(filters[filterKey]?.[1]) : ""}
+            onChange={handleMinMaxChange(filterKey, "max")}
+            InputProps={{ sx: { fontSize: '14px', borderRadius: '6px' } }} // Adjusted font size and border radius
+            fullWidth
+            placeholder="Any"
+          />
+        </div>
+      </div>
+  );
 
-  const handleBeamMinChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setBeamMin(value);
-  };
-
-  const handleBeamMaxChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setBeamMax(value);
-  };
-
-  const handleDraftMinChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setDraftMin(value);
-  };
-
-  const handleDraftMaxChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setDraftMax(value);
-  };
-
-  const handleRangeMinChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setRangeMin(value);
-  };
-
-  const handleRangeMaxChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setRangeMax(value);
-  };
-
-  const handleDryWeightMinChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setDryWeightMin(value);
-  };
-
-  const handleDryWeightMaxChange = (e) => {
-    const value = Number(e.target.value.replace(/[^0-9]/g, ""));
-    setDryWeightMax(value);
-  };
 
   return (
-    <div>
-      {/* Boat Type */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setBoatTypeOpen(!boatTypeOpen)}
-        >
-          <h3 className="text-black text-lg">Boat type</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {boatTypeOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={boatTypeOpen}>
-          <FormGroup className="mt-3">
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Bay boats"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Bowrider"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Center consoles"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Cruisers"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Dinghies"
-              sx={{ color: "black" }}
-            />
-          </FormGroup>
-        </Collapse>
-      </div>
-
-      {/* Brand */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setBrandOpen(!brandOpen)}
-        >
-          <h3 className="text-black text-lg">Brand</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {brandOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={brandOpen}>
-          <FormGroup className="mt-3">
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Bertram"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Boston Whaler"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Sea Ray"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Yamaha"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Grady-White"
-              sx={{ color: "black" }}
-            />
-          </FormGroup>
-        </Collapse>
-      </div>
-
-      {/* Mode */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setModeOpen(!modeOpen)}
-        >
-          <h3 className="text-black text-lg">Mode</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {modeOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={modeOpen}>
-          <FormGroup className="mt-3">
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="New"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Used"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Brokerage"
-              sx={{ color: "black" }}
-            />
-          </FormGroup>
-        </Collapse>
-      </div>
-
-      {/* Length */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setLengthOpen(!lengthOpen)}
-        >
-          <h3 className="text-black text-lg">Length</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {lengthOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={lengthOpen}>
-          <FormGroup className="mt-3">
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="Under 20'"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="20' - 30'"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} defaultChecked />}
-              label="30' - 40'"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="40' - 50'"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Over 50'"
-              sx={{ color: "black" }}
-            />
-          </FormGroup>
-        </Collapse>
-      </div>
-
-      {/* Price */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setPriceOpen(!priceOpen)}
-        >
-          <h3 className="text-black text-lg">Price</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {priceOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={priceOpen}>
-          <div className="mt-3">
-            <div className="flex gap-4 mb-4">
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-                >
-                  Min:
-                </div>
+    <div className="flex flex-col gap-1"> {/* Removed outer div, Home2Left provides padding */}
+      {/* Price Filter */}
+      {renderCollapsibleSection("Price", "price", (
+        <>
+          <div className="flex gap-3 mb-3"> {/* Adjusted gap and margin */}
+             <div style={{ flex: 1 }}>
+                <Typography variant="caption" display="block" gutterBottom sx={{ color: "#00000099", fontSize: '13px' }}>Min:</Typography>
                 <TextField
                   variant="outlined"
                   size="small"
-                  value={`$${priceRange[0]}`}
-                  onChange={handleMinInputChange}
-                  inputProps={{
-                    min: 0,
-                    max: priceRange[1],
-                    style: { textAlign: "center" },
-                  }}
+                  value={filters.priceRange?.[0] !== undefined ? `$${formatNumber(filters.priceRange[0])}` : "$0"}
+                  onChange={handleMinPriceInputChange}
+                  InputProps={{ sx: { fontSize: '14px', borderRadius: '6px' } }}
                   fullWidth
                 />
               </div>
               <div style={{ flex: 1 }}>
-                <div
-                  style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-                >
-                  Max:
-                </div>
+                <Typography variant="caption" display="block" gutterBottom sx={{ color: "#00000099", fontSize: '13px' }}>Max:</Typography>
                 <TextField
                   variant="outlined"
                   size="small"
-                  value={`$${priceRange[1]}`}
-                  onChange={handleMaxInputChange}
-                  inputProps={{
-                    min: priceRange[0],
-                    style: { textAlign: "center" },
-                  }}
+                  value={filters.priceRange?.[1] !== undefined ? `$${formatNumber(filters.priceRange[1])}` : `$${formatNumber(wordpressFilters?.max_price || 500000)}`}
+                  onChange={handleMaxPriceInputChange}
+                  InputProps={{ sx: { fontSize: '14px', borderRadius: '6px' } }}
                   fullWidth
                 />
               </div>
-            </div>
-            <Slider
-              value={priceRange}
-              onChange={handlePriceChange}
-              min={0}
-              max={500000}
-              step={100}
-              sx={{ color: "#2C4371" }}
-            />
           </div>
-        </Collapse>
-      </div>
+          <Slider
+            value={filters.priceRange || [0, wordpressFilters?.max_price || 500000]}
+            onChange={handlePriceChange}
+            min={0}
+            max={wordpressFilters?.max_price || 500000} // Use max_price from wordpressFilters if available
+            step={wordpressFilters?.price_step || 1000} // Use price_step from wordpressFilters if available
+            sx={{ color: "#2C4371", '& .MuiSlider-thumb': { width: 16, height: 16 } }} // Styled slider
+            valueLabelDisplay="auto"
+            valueLabelFormat={(value) => `$${value.toLocaleString()}`}
+          />
+        </>
+      ))}
 
-      {/* Year */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setYearOpen(!yearOpen)}
-        >
-          <h3 className="text-black text-lg">Year</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {yearOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={yearOpen}>
-          <FormGroup className="mt-3">
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="2024"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="2023"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="2020 - 2022"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="2015 - 2019"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="2010 - 2014"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Before 2010"
-              sx={{ color: "black" }}
-            />
-          </FormGroup>
-        </Collapse>
-      </div>
+      {/* Condition Filter */}
+      {getFilterOptions('boat_condition').length > 0 && renderCollapsibleSection("Condition", "boat_condition",
+        renderCheckboxFilter('boat_condition', "selectedConditions")
+      )}
+      
+      {/* Boat Type Filter */}
+      {getFilterOptions('boat_type').length > 0 && renderCollapsibleSection("Boat Type", "boat_type",
+        renderCheckboxFilter('boat_type', "selectedDynamicFilters", "boat_type")
+      )}
 
-      {/* Engine Type */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setEngineTypeOpen(!engineTypeOpen)}
-        >
-          <h3 className="text-black text-lg">Engine Type</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {engineTypeOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={engineTypeOpen}>
-          <FormGroup className="mt-3">
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Outboard"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Inboard"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Stern Drive"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Jet"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Electric"
-              sx={{ color: "black" }}
-            />
-          </FormGroup>
-        </Collapse>
-      </div>
-
-      {/* Promotions */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setPromotionsOpen(!promotionsOpen)}
-        >
-          <h3 className="text-black text-lg">Promotions</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {promotionsOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={promotionsOpen}>
-          <FormGroup className="mt-3">
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="On Sale"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Special Offer"
-              sx={{ color: "black" }}
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{ color: "#00000080" }} />}
-              label="Clearance"
-              sx={{ color: "black" }}
-            />
-          </FormGroup>
-        </Collapse>
-      </div>
-
-      {/* Advanced Options */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setAdvancedOpen(!advancedOpen)}
-        >
-          <h3 className="text-black text-lg">Advanced Options</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {advancedOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={advancedOpen}>
-          {/* Online tour */}
-          <div className="mt-4">
-            <div
-              className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-              onClick={() => setOnlineTourOpen(!onlineTourOpen)}
-            >
-              <h4 className="text-black text-base">Online tour</h4>
-              <IconButton
-                sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-              >
-                {onlineTourOpen ? <RemoveIcon /> : <AddIcon />}
-              </IconButton>
-            </div>
-            <Collapse in={onlineTourOpen}>
-              <FormGroup className="mt-3">
-                <FormControlLabel
-                  control={<Checkbox sx={{ color: "#00000080" }} />}
-                  label="Available"
-                  sx={{ color: "black" }}
-                />
-                <FormControlLabel
-                  control={<Checkbox sx={{ color: "#00000080" }} />}
-                  label="Not Available"
-                  sx={{ color: "black" }}
-                />
-              </FormGroup>
-            </Collapse>
-          </div>
-          {/* Fuel type */}
-          <div className="mt-4">
-            <div
-              className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-              onClick={() => setFuelTypeOpen(!fuelTypeOpen)}
-            >
-              <h4 className="text-black text-base">Fuel type</h4>
-              <IconButton
-                sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-              >
-                {fuelTypeOpen ? <RemoveIcon /> : <AddIcon />}
-              </IconButton>
-            </div>
-            <Collapse in={fuelTypeOpen}>
-              <div className="flex gap-4 mt-3">
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      color: "#00000080",
-                      fontSize: 14,
-                      marginBottom: 4,
-                    }}
-                  >
-                    Min:
-                  </div>
-                  <TextField
-                    variant="outlined"
+      {/* Brand (Make) Filter */}
+      {getFilterOptions('make').length > 0 && renderCollapsibleSection("Brand", "make",
+        renderCheckboxFilter('make', "selectedDynamicFilters", "make")
+      )}
+      
+      {/* Length Filter */}
+      {renderCollapsibleSection("Length", "lengthRange", renderRangeFilterInputs("lengthRange", "ft"))}
+      
+      {/* Year Filter */}
+      {getFilterOptions('year').length > 0 && renderCollapsibleSection("Year", "year", (
+          <FormGroup sx={{ maxHeight: 200, overflowY: 'auto', pr: 1 }}> {/* Scrollable year list */}
+            {getFilterOptions('year').sort((a,b) => Number(b) - Number(a)).map((year) => (
+              <FormControlLabel
+                key={year}
+                control={
+                  <Checkbox
+                    sx={{ color: "#00000080", '&.Mui-checked': { color: '#2C4371' } }}
+                    checked={filters.selectedDynamicFilters?.year?.includes(String(year)) || false}
+                    onChange={(e) =>
+                      onFilterChange("selectedDynamicFilters", {
+                        key: "year",
+                        value: String(year),
+                        checked: e.target.checked,
+                      })
+                    }
                     size="small"
-                    value={fuelMin}
-                    onChange={handleFuelMinChange}
-                    inputProps={{ min: 0, style: { textAlign: "center" } }}
-                    fullWidth
                   />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      color: "#00000080",
-                      fontSize: 14,
-                      marginBottom: 4,
-                    }}
-                  >
-                    Max:
-                  </div>
-                  <TextField
-                    variant="outlined"
+                }
+                label={<Typography variant="body2" sx={{color: "black"}}>{String(year)}</Typography>}
+              />
+            ))}
+          </FormGroup>
+        )
+      )}
+      
+      {/* Engine Type Filter */}
+      {getFilterOptions('engine_type').length > 0 && renderCollapsibleSection("Engine Type", "engine_type",
+        renderCheckboxFilter('engine_type', "selectedDynamicFilters", "engine_type")
+      )}
+      
+      {/* Fuel Type Filter */}
+      {getFilterOptions('fuel_type').length > 0 && renderCollapsibleSection("Fuel Type", "fuel_type",
+        renderCheckboxFilter('fuel_type', "selectedDynamicFilters", "fuel_type")
+      )}
+
+      {/* Fuel Tank Capacity Filter */}
+      {renderCollapsibleSection("Fuel Tank Capacity", "fuelTankCapacityRange", renderRangeFilterInputs("fuelTankCapacityRange", "Gal"))}
+      
+      {/* Beam Filter */}
+      {renderCollapsibleSection("Beam", "beamRange", renderRangeFilterInputs("beamRange", "ft"))}
+
+      {/* Draft Filter */}
+      {renderCollapsibleSection("Draft", "draftRange", renderRangeFilterInputs("draftRange", "ft"))}
+      
+      {/* Range Filter */}
+      {renderCollapsibleSection("Range", "rangeRange", renderRangeFilterInputs("rangeRange", "miles"))}
+      
+      {/* Dry Weight Filter */}
+      {renderCollapsibleSection("Dry Weight", "dryWeightRange", renderRangeFilterInputs("dryWeightRange", "lbs"))}
+      
+      {/* Promotions Filter */}
+      {getFilterOptions('promotions').length > 0 && renderCollapsibleSection("Promotions", "promotions",
+        renderCheckboxFilter('promotions', "selectedDynamicFilters", "promotions")
+      )}
+      
+      {/* Online Tour Filter */}
+      {getFilterOptions('online_tour').length > 0 && renderCollapsibleSection("Online Tour", "online_tour", (
+        <FormGroup>
+            {getFilterOptions('online_tour').map((tourOption) => (
+              <FormControlLabel
+                key={tourOption} // Assuming tourOption is unique, e.g., '1' or 'Yes'
+                control={
+                  <Checkbox
+                    sx={{ color: "#00000080", '&.Mui-checked': { color: '#2C4371' } }}
+                    checked={filters.selectedDynamicFilters?.online_tour?.includes(String(tourOption)) || false}
+                    onChange={(e) =>
+                      onFilterChange("selectedDynamicFilters", {
+                        key: "online_tour",
+                        value: String(tourOption),
+                        checked: e.target.checked,
+                      })
+                    }
                     size="small"
-                    value={fuelMax}
-                    onChange={handleFuelMaxChange}
-                    inputProps={{ min: 0, style: { textAlign: "center" } }}
-                    fullWidth
                   />
-                </div>
-              </div>
-            </Collapse>
-          </div>
-        </Collapse>
-      </div>
+                }
+                // Customize label based on value, e.g., if '1' means 'Available'
+                label={<Typography variant="body2" sx={{color: "black"}}>{tourOption === '1' ? 'Available' : String(tourOption)}</Typography>}
+              />
+            ))}
+          </FormGroup>
+        )
+      )}
 
-      {/* Fuel tank capacity */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setFuelTankOpen(!fuelTankOpen)}
-        >
-          <h3 className="text-black text-lg">Fuel tank capacity</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {fuelTankOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={fuelTankOpen}>
-          <div className="flex gap-4 mt-3">
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Min:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={fuelTankMin}
-                onChange={handleFuelTankMinChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Max:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={fuelTankMax}
-                onChange={handleFuelTankMaxChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-          </div>
-        </Collapse>
-      </div>
-
-      {/* Beam */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setBeamOpen(!beamOpen)}
-        >
-          <h3 className="text-black text-lg">Beam</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {beamOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={beamOpen}>
-          <div className="flex gap-4 mt-3">
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Min:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={beamMin}
-                onChange={handleBeamMinChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Max:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={beamMax}
-                onChange={handleBeamMaxChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-          </div>
-        </Collapse>
-      </div>
-
-      {/* Draft */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setDraftOpen(!draftOpen)}
-        >
-          <h3 className="text-black text-lg">Draft</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {draftOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={draftOpen}>
-          <div className="flex gap-4 mt-3">
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Min:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={draftMin}
-                onChange={handleDraftMinChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Max:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={draftMax}
-                onChange={handleDraftMaxChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-          </div>
-        </Collapse>
-      </div>
-
-      {/* Range */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setRangeOpen(!rangeOpen)}
-        >
-          <h3 className="text-black text-lg">Range</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {rangeOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={rangeOpen}>
-          <div className="flex gap-4 mt-3">
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Min:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={rangeMin}
-                onChange={handleRangeMinChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Max:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={rangeMax}
-                onChange={handleRangeMaxChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-          </div>
-        </Collapse>
-      </div>
-
-      {/* Dry weight */}
-      <div className="mt-4">
-        <div
-          className="flex items-center justify-between cursor-pointer border-b border-[#00000033] pb-3"
-          onClick={() => setDryWeightOpen(!dryWeightOpen)}
-        >
-          <h3 className="text-black text-lg">Dry weight</h3>
-          <IconButton
-            sx={{ border: "1px solid #00000033", borderRadius: "50%" }}
-          >
-            {dryWeightOpen ? <RemoveIcon /> : <AddIcon />}
-          </IconButton>
-        </div>
-        <Collapse in={dryWeightOpen}>
-          <div className="flex gap-4 mt-3">
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Min:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={dryWeightMin}
-                onChange={handleDryWeightMinChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-            <div style={{ flex: 1 }}>
-              <div
-                style={{ color: "#00000080", fontSize: 14, marginBottom: 4 }}
-              >
-                Max:
-              </div>
-              <TextField
-                variant="outlined"
-                size="small"
-                value={dryWeightMax}
-                onChange={handleDryWeightMaxChange}
-                inputProps={{ min: 0, style: { textAlign: "center" } }}
-                fullWidth
-              />
-            </div>
-          </div>
-        </Collapse>
-      </div>
     </div>
   );
 }
