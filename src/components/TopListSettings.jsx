@@ -36,18 +36,21 @@ function TopListSettings({
           </div>
 
           {/* View Mode Buttons - using basic buttons for now, can be replaced by Button component */}
+          
           <button
             type="button"
             onClick={() => onViewModeChange('grid')}
-            className={`rounded-md h-9 ml-2 px-2.5 ${viewMode === 'grid' ? 'bg-gray-200' : 'bg-transparent'} border border-gray-300 hover:bg-gray-100`}
+            className={`ml-2 w-10 h-10 rounded-lg flex items-center justify-center 
+              ${viewMode === 'grid' ? 'bg-blue-800 text-white' : 'bg-white text-gray-800 hover:bg-gray-300  '}
+              border border-gray-300  transition`}
             aria-label="Grid view"
           >
-            <Grid size={16} />
+            <Grid size={20} strokeWidth={2.5} />
           </button>
           <button
             type="button"
             onClick={() => onViewModeChange('list')}
-            className={`rounded-md h-9 ml-1 px-2.5 ${viewMode === 'list' ? 'bg-gray-200' : 'bg-transparent'} border border-gray-300 hover:bg-gray-100`}
+            className={`rounded-md h-9 ml-1 px-2.5 ${viewMode === 'list' ?'bg-blue-800 text-white' : 'hover:bg-gray-300   bg-transparent'} border border-gray-300 `}
             aria-label="List view"
           >
             <List size={16} />

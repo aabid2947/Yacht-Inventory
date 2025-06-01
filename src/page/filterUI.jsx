@@ -220,7 +220,7 @@ const FilterUI = ({
 
     return (
         <div key={filterKey} className="mb-4">
-            <h3 onClick={() => toggleSection(filterKey)} className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2">
+            <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2">
                 {label} {unit && unit !== "$" ? `(${unit})` : ''}
                 <span className="text-gray-500">{openFilterSections[filterKey] ? <Minus size={16} /> : <Plus size={16} />}</span>
             </h3>

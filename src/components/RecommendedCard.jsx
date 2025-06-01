@@ -52,14 +52,14 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
           />
           {yacht.meta?._yacht_promotions && (
             <div className="absolute top-3 left-3">
-              <span className="bg-yellow-400 text-black text-xs font-semibold px-2.5 py-1 rounded">
+              <span className="bg-yellow-400 text-black text-xs  font-semibold px-2.5 py-1 rounded">
                 {Array.isArray(yacht.meta._yacht_promotions) ? yacht.meta._yacht_promotions.join(', ') : yacht.meta._yacht_promotions}
               </span>
             </div>
           )}
         </figure>
-        <section className="flex flex-col items-start w-full mt-3 sm:mt-[19px]">
-          <h2 className="text-lg sm:text-xl md:text-[22px] font-medium text-black truncate" title={yacht.title?.rendered}>
+        <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
+          <h2 className="text-lg sm:text-xl md:text-[22px] tracking-wide font-bold text-black truncate" title={yacht.title?.rendered}>
             {yacht.title?.rendered || "N/A"}
           </h2>
           <p className="mt-1 text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
@@ -81,7 +81,7 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
                       maximumFractionDigits: 0,
                     }).format(parseInt(yacht.meta._yacht_price) || 0)}
                   </p>
-                  <p className="font-bold text-xl sm:text-2xl text-red-600">
+                  <p className="font-bold text-xl sm:text-2xl text-black">
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'USD',
