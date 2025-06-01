@@ -59,7 +59,7 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
           )}
         </figure>
         <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
-          <h2 className="text-lg sm:text-xl md:text-[22px] tracking-wide font-bold text-black truncate" title={yacht.title?.rendered}>
+          <h2 className="text-md sm:text-xl md:text-[22px] tracking-wide font-medium text-black truncate" title={yacht.title?.rendered}>
             {yacht.title?.rendered || "N/A"}
           </h2>
           <p className="mt-1 text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
@@ -81,7 +81,7 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
                       maximumFractionDigits: 0,
                     }).format(parseInt(yacht.meta._yacht_price) || 0)}
                   </p>
-                  <p className="font-bold text-xl sm:text-2xl text-black">
+                  <p className="font-medium text-xl sm:text-2xl text-black">
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'USD',
