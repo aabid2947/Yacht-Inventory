@@ -75,7 +75,7 @@ function Home2Right({
       )}
 
       {!loading && yachtsToDisplay.length > 0 && (
-        <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'} gap-6 mb-6`}>
+        <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'} gap-3 mb-6`}>
           {yachtsToDisplay.map((yacht) => (
             <RecommendedCard
               key={yacht.id}
