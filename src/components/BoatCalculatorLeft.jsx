@@ -1,10 +1,9 @@
-import { Button as MuiButton, Slider } from "@mui/material"; // Renamed Button to MuiButton to avoid conflict if a local Button component exists
+import { Button as MuiButton, Slider } from "@mui/material";
 import React from "react";
 
 // Define marks outside the component for stable references
 const downPaymentMarks = [
   { value: 10, label: "10%" },
-  { value: 15, label: "15%" },
   { value: 20, label: "20%" },
   { value: 30, label: "30%" },
   { value: 40, label: "40%" },
@@ -12,7 +11,7 @@ const downPaymentMarks = [
 ];
 
 const loanDurationMarks = [
-  { value: 10, label: "10yr" }, // Assuming labels are years
+  { value: 10, label: "10yr" },
   { value: 12, label: "12yr" },
   { value: 15, label: "15yr" },
   { value: 20, label: "20yr" },
@@ -22,13 +21,14 @@ function BoatCalculatorLeft({
   msrp,
   downPaymentAmount,
   downPaymentPercentage,
-  onDownPaymentChange, // Expects a percentage value
+  onDownPaymentChange,
+  downPaymentInput, // Value for the input field
+  onDownPaymentInputChange, // Handler for the input field
   loanTermInYears,
-  onLoanTermChange, // Expects a year value
+  onLoanTermChange,
   creditRatingText,
   onCreditRatingChange,
   onResetCalculator,
-  // onCalculate, // Removed as calculation will be reactive
 }) {
 
   const formatCurrency = (value) => {
@@ -40,18 +40,11 @@ function BoatCalculatorLeft({
       maximumFractionDigits: 0,
     }).format(value);
   };
-
-  // Find the closest mark for slider value initialization
-  const getSliderValueFromPercentage = (percentage, marks) => {
-    const foundMark = marks.find(mark => mark.value === percentage);
-    return foundMark ? foundMark.value : marks[0].value;
-  };
   
   const getSliderValueFromYears = (years, marks) => {
     const foundMark = marks.find(mark => mark.value === years);
     return foundMark ? foundMark.value : marks[0].value;
   };
-
 
   return (
     <div className="flex flex-col">
@@ -64,43 +57,51 @@ function BoatCalculatorLeft({
         <Slider
           className="mt-[30px]"
           aria-label="Down payment percentage"
-          value={getSliderValueFromPercentage(downPaymentPercentage, downPaymentMarks)}
-          getAriaValueText={(value) => `${value}%`}
-          step={null} // Snap to marks
-          valueLabelDisplay="off" // Labels are shown by marks
+          value={downPaymentPercentage}
+          getAriaValueText={(value) => `${Math.round(value)}%`}
+          // UPDATED: Allow any value within the range
+          step={1} 
+          valueLabelDisplay="off"
           marks={downPaymentMarks}
-          min={downPaymentMarks[0].value}
-          max={downPaymentMarks[downPaymentMarks.length - 1].value}
+          min={10} // Set a min percentage
+          max={50} // Set a max percentage
           onChange={(_, newValue) => onDownPaymentChange(newValue)}
-          sx={{ // Custom styles for MUI slider
-            '& .MuiSlider-thumb': {
-              color: '#274989', // Thumb color
-            },
-            '& .MuiSlider-track': {
-              color: '#274989', // Track color
-            },
-            '& .MuiSlider-rail': {
-              color: '#ACC4E4', // Rail color
-            },
-            '& .MuiSlider-markLabel': {
-              color: '#555', // Mark label color
-            }
+          sx={{
+            '& .MuiSlider-thumb': { color: '#274989' },
+            '& .MuiSlider-track': { color: '#274989' },
+            '& .MuiSlider-rail': { color: '#ACC4E4' },
+            '& .MuiSlider-markLabel': { color: '#555' }
           }}
         />
+      </div>
+      
+      {/* Manual Input for Down Payment */}
+      <div className="mt-4">
+          <label className="text-sm text-gray-600 block mb-1">Enter down payment manually:</label>
+          <div className="flex items-center relative">
+            <span className="absolute left-3 text-gray-500">$</span>
+            <input
+              type="text"
+              value={downPaymentInput}
+              // UPDATED: Use the handler from the parent
+              onChange={onDownPaymentInputChange}
+              className="border border-gray-300 rounded p-2 w-full pl-6"
+              placeholder="Enter amount"
+            />
+          </div>
       </div>
 
       {/* Loan duration */}
       <div className="mt-[35px]">
         <div className="flex justify-between">
           <span className="font-medium text-lg">Loan duration</span>
-          {/* Value displayed implicitly by slider or can be added if needed */}
         </div>
         <Slider
           className="mt-[30px]"
           aria-label="Loan duration in years"
           value={getSliderValueFromYears(loanTermInYears, loanDurationMarks)}
           getAriaValueText={(value) => `${value} years`}
-          step={null} // Snap to marks
+          step={null}
           valueLabelDisplay="off"
           marks={loanDurationMarks}
           min={loanDurationMarks[0].value}
@@ -117,7 +118,7 @@ function BoatCalculatorLeft({
 
       <div className="mt-[30px] flex justify-between items-center">
         <span className="font-medium text-lg">Credit rating</span>
-        <MuiButton // Using MUI Button for consistency with Slider import
+        <MuiButton
           onClick={onCreditRatingChange}
           variant="outlined"
           sx={{
@@ -125,7 +126,7 @@ function BoatCalculatorLeft({
             color: 'black',
             textTransform: 'none',
             borderRadius: '8px',
-            padding: '6px 12px', // Adjusted padding
+            padding: '6px 12px',
             '&:hover': {
               borderColor: '#00000088',
               backgroundColor: '#f0f0f0'
@@ -137,7 +138,7 @@ function BoatCalculatorLeft({
       </div>
 
       <div className="mt-[38px] flex justify-between items-center">
-        <MuiButton // Using MUI Button
+        <MuiButton 
           onClick={onResetCalculator}
           variant="outlined"
           sx={{
@@ -145,7 +146,7 @@ function BoatCalculatorLeft({
             color: 'black',
             textTransform: 'none',
             borderRadius: '8px',
-            padding: '6px 20px', // Adjusted padding
+            padding: '6px 20px',
              '&:hover': {
               borderColor: '#00000088',
               backgroundColor: '#f0f0f0'
@@ -154,24 +155,6 @@ function BoatCalculatorLeft({
         >
           Reset
         </MuiButton>
-        {/* The "Calculate" button is removed as calculations are now reactive. 
-            If you need it, uncomment and pass onCalculate prop.
-        <MuiButton
-          onClick={onCalculate}
-          variant="contained"
-          sx={{
-            backgroundColor: '#274989',
-            color: 'white',
-            textTransform: 'none',
-            borderRadius: '8px',
-            padding: '6px 24px', // Adjusted padding
-            '&:hover': {
-                backgroundColor: '#1f3a70'
-            }
-          }}
-        >
-          Calculate
-        </MuiButton> */}
       </div>
     </div>
   );

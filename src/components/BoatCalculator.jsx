@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import BoatCalculatorRight from "./BoatCalculatorRight";
 import BoatCalculatorLeft from "./BoatCalculatorLeft";
 
-const initialMsrp = 1325275; // Default MSRP from your BoatCalculator.jsx
+const initialMsrp = 1325275;
 
 const creditRatings = [
   { text: "Exceptional (800+)", rate: 5.99 },
@@ -12,15 +12,21 @@ const creditRatings = [
   { text: "Poor (<580)", rate: 12.99 },
 ];
 
-const defaultDownPaymentPercentage = 20; // Default 20%
-const defaultLoanTermInYears = 15; // Default 15 years
+const defaultDownPaymentPercentage = 20;
+const defaultLoanTermInYears = 15;
 
-function BoatCalculator({ msrp = initialMsrp }) { // Allow MSRP to be passed as a prop
+function BoatCalculator({ msrp = initialMsrp }) {
   const [currentMsrp, setCurrentMsrp] = useState(msrp);
   const [downPaymentPercentage, setDownPaymentPercentage] = useState(defaultDownPaymentPercentage);
   const [downPaymentAmount, setDownPaymentAmount] = useState(currentMsrp * (defaultDownPaymentPercentage / 100));
+  
+  // ADDED: State to hold the raw input value for the down payment field
+  const [downPaymentInput, setDownPaymentInput] = useState(
+    (currentMsrp * (defaultDownPaymentPercentage / 100)).toString()
+  );
+
   const [loanTermInYears, setLoanTermInYears] = useState(defaultLoanTermInYears);
-  const [creditRatingIndex, setCreditRatingIndex] = useState(0); // Index for creditRatings array
+  const [creditRatingIndex, setCreditRatingIndex] = useState(0);
   const [monthlyPayment, setMonthlyPayment] = useState(0);
 
   const interestRate = creditRatings[creditRatingIndex].rate;
@@ -36,27 +42,56 @@ function BoatCalculator({ msrp = initialMsrp }) { // Allow MSRP to be passed as 
       return;
     }
 
-    const payment =
-      (principal * monthlyRate) /
-      (1 - Math.pow(1 + monthlyRate, -numPayments));
-
+    const payment = (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -numPayments));
     setMonthlyPayment(payment > 0 ? payment : 0);
   }, [currentMsrp, downPaymentAmount, interestRate, loanTermInYears]);
 
   useEffect(() => {
-    // Update when external MSRP prop changes
     setCurrentMsrp(msrp);
     const newDownPayment = msrp * (downPaymentPercentage / 100);
     setDownPaymentAmount(newDownPayment);
-  }, [msrp, downPaymentPercentage]); // Recalculate down payment if MSRP or its percentage changes externally
+    // When MSRP changes, update the input field as well
+    setDownPaymentInput(formatCurrencyDisplay(newDownPayment, false));
+  }, [msrp]);
 
   useEffect(() => {
     calculateMonthlyPayment();
-  }, [calculateMonthlyPayment]); // Relies on the useCallback to only run when inputs change
+  }, [calculateMonthlyPayment]);
 
+  const formatCurrencyDisplay = (value, useGrouping = true) => {
+    if (isNaN(value) || value === null) return '0';
+    return new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+      useGrouping: useGrouping, // Control whether to use commas
+    }).format(value);
+  };
+  
+  // UPDATED: Slider handler now also updates the text input
   const handleDownPaymentChange = (percentage) => {
+    const newAmount = currentMsrp * (percentage / 100);
     setDownPaymentPercentage(percentage);
-    setDownPaymentAmount(currentMsrp * (percentage / 100));
+    setDownPaymentAmount(newAmount);
+    setDownPaymentInput(formatCurrencyDisplay(newAmount, false)); // Update input without commas
+  };
+
+  // ADDED: Handler for the manual input field
+  const handleDownPaymentInputChange = (e) => {
+    const rawValue = e.target.value;
+    setDownPaymentInput(rawValue); // Let user type freely
+
+    const numericValue = parseFloat(rawValue.replace(/[^0-9.]/g, ''));
+
+    if (!isNaN(numericValue) && currentMsrp > 0) {
+      const cappedAmount = Math.min(numericValue, currentMsrp);
+      const newPercentage = (cappedAmount / currentMsrp) * 100;
+      
+      setDownPaymentAmount(cappedAmount);
+      setDownPaymentPercentage(newPercentage); // This will make the slider move
+    } else if (rawValue === "") {
+        setDownPaymentAmount(0);
+        setDownPaymentPercentage(0);
+    }
   };
 
   const handleLoanTermChange = (years) => {
@@ -68,23 +103,13 @@ function BoatCalculator({ msrp = initialMsrp }) { // Allow MSRP to be passed as 
   };
 
   const handleResetCalculator = () => {
+    const newDownPayment = currentMsrp * (defaultDownPaymentPercentage / 100);
     setDownPaymentPercentage(defaultDownPaymentPercentage);
-    setDownPaymentAmount(currentMsrp * (defaultDownPaymentPercentage / 100));
+    setDownPaymentAmount(newDownPayment);
+    setDownPaymentInput(formatCurrencyDisplay(newDownPayment, false)); // Reset input field
     setLoanTermInYears(defaultLoanTermInYears);
     setCreditRatingIndex(0);
-    // MSRP is not reset, as it might be a fixed prop for a specific boat page
   };
-  
-  const formatCurrencyDisplay = (value) => {
-     if (isNaN(value) || value === null) return '0'; // Fallback for display
-    return new Intl.NumberFormat('en-US', {
-      // style: 'currency', // Not using currency style here, just number
-      // currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
 
   return (
     <div className="border rounded-[30px] border-[#00000033] p-6 md:p-8 lg:p-11 flex flex-col">
@@ -99,7 +124,7 @@ function BoatCalculator({ msrp = initialMsrp }) { // Allow MSRP to be passed as 
       <div className="flex gap-[17px] mt-6 md:mt-[52px]">
         <span className="text-base md:text-lg font-medium">MSRP:</span>
         <span className="text-base md:text-lg font-normal text-[#000000B2]">
-          ${formatCurrencyDisplay(currentMsrp)} {/* Displaying dynamic MSRP */}
+          ${formatCurrencyDisplay(currentMsrp)}
         </span>
       </div>
       <div className="mt-8 md:mt-[54px] grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[54px]">
@@ -109,6 +134,8 @@ function BoatCalculator({ msrp = initialMsrp }) { // Allow MSRP to be passed as 
             downPaymentAmount={downPaymentAmount}
             downPaymentPercentage={downPaymentPercentage}
             onDownPaymentChange={handleDownPaymentChange}
+            downPaymentInput={downPaymentInput} // Pass the input value
+            onDownPaymentInputChange={handleDownPaymentInputChange} // Pass the handler
             loanTermInYears={loanTermInYears}
             onLoanTermChange={handleLoanTermChange}
             creditRatingText={creditRatingText}

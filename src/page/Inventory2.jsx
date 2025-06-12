@@ -54,8 +54,23 @@ const Inventory2 = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  // The MY_YACHT_PLUGIN_DATA.restUrl is passed from wp_localize_script in the plugin
+  const REST_ROOT = window.MY_YACHT_PLUGIN_DATA?.restUrl || '';
+  
+  // Example: the media endpoint
+  // const MEDIA_ENDPOINT = REST_ROOT + 'wp/v2/media/';
+  
   const MEDIA_ENDPOINT = 'https://digigrammers.com/boat/wp-json/wp/v2/media/';
+
+    // Example: the yacht endpoint
+  // const YACHT_ENDPOINT = REST_ROOT + 'wp/v2/yacht?per_page=100';
+
   const YACHT_ENDPOINT = 'https://digigrammers.com/boat/wp-json/wp/v2/yacht?per_page=100';
+
+  
+  // Example: the filters endpoint
+  // const FILTERS_ENDPOINT = REST_ROOT + 'yacht-inventory/v1/filters';
+
   const FILTERS_ENDPOINT = 'https://digigrammers.com/boat/wp-json/yacht-inventory/v1/filters';
 
   const handleFilterChange = useCallback((filterKey, value, isCheckedOrNewValue) => {

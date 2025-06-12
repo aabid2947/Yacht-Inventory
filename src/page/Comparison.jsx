@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useComparison } from "../context/ComparisonContext";
 import defaultBoatImageIcon from "../assets/boat.png"; // Default image if specific one is missing
+import RecommendedBoat from '../components/RecommendedBoat'
 
 // Helper for formatting price
 const formatPrice = (price) => {

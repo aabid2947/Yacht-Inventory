@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import shareIcon from "./../assets/share.svg"; // Renamed import for clarity
 import printIcon from "./../assets/print.svg"; // Renamed import for clarity
 
 function HomeTop({ yacht }) { // Accept yacht as a prop
-  const yachtName = yacht?.title?.rendered || "Yacht Name Not Available";
+  const yachtName = yacht?.title|| "Yacht Name Not Available";
   const yachtId = yacht?.id ? `#${yacht.id}` : "#ID Not Available";
   // Assuming 'New' or 'Used' status comes from a meta field like _yacht_boat_condition
   const boatCondition = yacht?.meta?._yacht_boat_condition || "Condition Unknown";
@@ -26,7 +26,9 @@ function HomeTop({ yacht }) { // Accept yacht as a prop
       console.log("Web Share API not supported. Implement a fallback.");
     }
   };
-
+useEffect(()=>{
+console.log(yacht)
+},[])
   const handlePrint = () => {
     window.print();
   };

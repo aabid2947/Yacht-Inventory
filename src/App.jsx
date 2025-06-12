@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter  as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./page/Home";
 import Footer from "./components/Footer";
@@ -9,10 +9,12 @@ import Comparison from "./page/Comparison";
 import { ComparisonProvider } from "./context/ComparisonContext";
 import CompareButton from "./components/CompareButton";
 import Inventory2 from "./page/Inventory2";
+import { YachtProvider } from './context/YachtContext';
 
 function App() {
   return (
     <ComparisonProvider>
+      <YachtProvider>
       <Router>
         <div style={{ maxWidth: "1920px", margin: "0 auto" }}>
           <Header />
@@ -28,6 +30,7 @@ function App() {
           <CompareButton />
         </div>
       </Router>
+      </YachtProvider>
     </ComparisonProvider>
   );
 }

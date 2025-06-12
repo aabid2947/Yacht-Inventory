@@ -22,7 +22,7 @@ const FilterUI = ({
 
   // Options that might be static or could be derived from wordpressFiltersFromParent if available
   const conditionOptions = useMemo(() => ["New", "Used", "Certified Pre-Owned"], []);
-  
+
   // Example dynamic filter keys that use pre-defined options if not in wordpressFiltersFromParent
   const staticOptionsForDynamicFilters = useMemo(() => ({
     boat_type: ["Bay boats", "Bowrider", "Center consoles", "Cruisers", "Dinghies"],
@@ -35,25 +35,25 @@ const FilterUI = ({
 
   const [openFilterSections, setOpenFilterSections] = useState(() => {
     const initialOpenState = {
-        conditions: true, // For the static condition checkboxes
-        advancedOptions: false, // For the "Advanced options" accordion toggle
+      conditions: true, // For the static condition checkboxes
+      advancedOptions: false, // For the "Advanced options" accordion toggle
     };
     // Initialize for static dynamic filters like boat_type, brand, etc.
     Object.keys(staticOptionsForDynamicFilters).forEach(key => {
-        initialOpenState[key] = key === 'boat_type'; // Open boat_type by default
+      initialOpenState[key] = key === 'boat_type'; // Open boat_type by default
     });
 
     // Initialize for range filters defined in parent
     if (rangeFilterDefinitionsFromParent) {
-        rangeFilterDefinitionsFromParent.forEach(def => {
-            initialOpenState[def.filterKey] = def.filterKey === "priceRange"; // Price range open by default
-        });
+      rangeFilterDefinitionsFromParent.forEach(def => {
+        initialOpenState[def.filterKey] = def.filterKey === "priceRange"; // Price range open by default
+      });
     }
     // Initialize for dynamic filters from WordPress (under "Advanced options")
     if (wordpressFiltersFromParent) {
-        Object.keys(wordpressFiltersFromParent).forEach(key => {
-            if (initialOpenState[key] === undefined) initialOpenState[key] = false; // Default to closed
-        });
+      Object.keys(wordpressFiltersFromParent).forEach(key => {
+        if (initialOpenState[key] === undefined) initialOpenState[key] = false; // Default to closed
+      });
     }
     return initialOpenState;
   });
@@ -83,43 +83,43 @@ const FilterUI = ({
         });
       });
     });
-    
+
     // Range filter tags
     rangeFilterDefinitionsFromParent.forEach(def => {
-        const currentRange = filtersFromParent[def.filterKey];
-        let defaultMin = def.defaultMin;
-        let defaultMax = def.defaultMax;
+      const currentRange = filtersFromParent[def.filterKey];
+      let defaultMin = def.defaultMin;
+      let defaultMax = def.defaultMax;
 
-        if (def.filterKey === "priceRange") {
-            defaultMin = initialMinPriceFromParent;
-            defaultMax = initialMaxPriceFromParent;
-        } else if (def.filterKey === "yearRange") {
-            defaultMin = initialMinYearFromParent;
-            defaultMax = initialMaxYearFromParent;
-        }
-        
-        // Add tag if current range differs from the (potentially data-driven) default range
-        if (currentRange && (currentRange[0] > defaultMin || currentRange[1] < defaultMax)) {
-            const unitLabel = def.unit === "$" ? "" : (def.unit || ""); // Don't double print $ for price
-            const val0Str = def.unit === "$" ? `${def.unit}${currentRange[0].toLocaleString()}` : `${currentRange[0]}${unitLabel}`;
-            const val1Str = def.unit === "$" ? `${def.unit}${currentRange[1].toLocaleString()}` : `${currentRange[1]}${unitLabel}`;
+      if (def.filterKey === "priceRange") {
+        defaultMin = initialMinPriceFromParent;
+        defaultMax = initialMaxPriceFromParent;
+      } else if (def.filterKey === "yearRange") {
+        defaultMin = initialMinYearFromParent;
+        defaultMax = initialMaxYearFromParent;
+      }
 
-            newTags.push({
-                id: `${def.filterKey}-${currentRange[0]}-${currentRange[1]}`,
-                label: `${def.label}: ${val0Str} - ${val1Str}`,
-                onRemove: () => handleFilterChangeFromParent(def.filterKey, [defaultMin, defaultMax]),
-            });
-        }
+      // Add tag if current range differs from the (potentially data-driven) default range
+      if (currentRange && (currentRange[0] > defaultMin || currentRange[1] < defaultMax)) {
+        const unitLabel = def.unit === "$" ? "" : (def.unit || ""); // Don't double print $ for price
+        const val0Str = def.unit === "$" ? `${def.unit}${currentRange[0].toLocaleString()}` : `${currentRange[0]}${unitLabel}`;
+        const val1Str = def.unit === "$" ? `${def.unit}${currentRange[1].toLocaleString()}` : `${currentRange[1]}${unitLabel}`;
+
+        newTags.push({
+          id: `${def.filterKey}-${currentRange[0]}-${currentRange[1]}`,
+          label: `${def.label}: ${val0Str} - ${val1Str}`,
+          onRemove: () => handleFilterChangeFromParent(def.filterKey, [defaultMin, defaultMax]),
+        });
+      }
     });
 
     setActiveFilterTags(newTags);
   }, [
-      filtersFromParent, 
-      initialMinPriceFromParent, initialMaxPriceFromParent, 
-      initialMinYearFromParent, initialMaxYearFromParent,
-      rangeFilterDefinitionsFromParent, handleFilterChangeFromParent,
-      conditionOptions // Added as it's used indirectly for selectedConditions tags
-    ]);
+    filtersFromParent,
+    initialMinPriceFromParent, initialMaxPriceFromParent,
+    initialMinYearFromParent, initialMaxYearFromParent,
+    rangeFilterDefinitionsFromParent, handleFilterChangeFromParent,
+    conditionOptions // Added as it's used indirectly for selectedConditions tags
+  ]);
 
   const toggleSection = (section) => {
     setOpenFilterSections((prevState) => ({
@@ -185,19 +185,19 @@ const FilterUI = ({
       </div>
     );
   };
-  
+
   const renderRangeSliderGroup = (definition) => {
     const { filterKey, label, unit, step } = definition;
-    
+
     let actualMin = definition.defaultMin;
     let actualMax = definition.defaultMax;
 
     if (filterKey === "priceRange") {
-        actualMin = initialMinPriceFromParent;
-        actualMax = initialMaxPriceFromParent;
+      actualMin = initialMinPriceFromParent;
+      actualMax = initialMaxPriceFromParent;
     } else if (filterKey === "yearRange") {
-        actualMin = initialMinYearFromParent;
-        actualMax = initialMaxYearFromParent;
+      actualMin = initialMinYearFromParent;
+      actualMax = initialMaxYearFromParent;
     }
     // For other filters, use their definition's defaultMin/Max from rangeFilterDefinitionsFromParent
     // which are passed as actualMin/actualMax via definition object.
@@ -205,72 +205,72 @@ const FilterUI = ({
     const currentRange = filtersFromParent[filterKey] || [actualMin, actualMax];
 
     const formatValueForInput = (val, isMin) => {
-        if (unit === "$") {
-            return val === (isMin ? actualMin : actualMax) && val === 0 ? "" : `$${Number(val).toLocaleString()}`;
-        }
-        return val === (isMin ? actualMin : actualMax) ? "" : String(val);
+      if (unit === "$") {
+        return val === (isMin ? actualMin : actualMax) && val === 0 ? "" : `$${Number(val).toLocaleString()}`;
+      }
+      return val === (isMin ? actualMin : actualMax) ? "" : String(val);
     };
-    
+
     const parseValueFromInput = (inputValue) => {
-        if (unit === "$") {
-            return Number.parseInt(String(inputValue).replace(/\D/g, ""));
-        }
-        return Number.parseInt(inputValue);
+      if (unit === "$") {
+        return Number.parseInt(String(inputValue).replace(/\D/g, ""));
+      }
+      return Number.parseInt(inputValue);
     };
 
     return (
-        <div key={filterKey} className="mb-4">
-            <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2">
-                {label} {unit && unit !== "$" ? `(${unit})` : ''}
-                <span className="text-gray-500">{openFilterSections[filterKey] ? <Minus size={16} /> : <Plus size={16} />}</span>
-            </h3>
-            {openFilterSections[filterKey] && (
-                <div className="space-y-4 pt-2">
-                    <div className="flex justify-between items-center gap-3">
-                        <div className="flex-1">
-                            <label htmlFor={`min-${filterKey}`} className="text-xs text-gray-600 block mb-1">Min:</label>
-                            <Input
-                                id={`min-${filterKey}`}
-                                type={unit === "$" ? "text" : "number"}
-                                value={formatValueForInput(currentRange[0], true)}
-                                placeholder={unit === "$" ? `$${Number(actualMin).toLocaleString()}` : `${actualMin}${unit && unit !== "$" ? unit : ""}`}
-                                className="h-10 text-sm w-full border-gray-300"
-                                onChange={(e) => {
-                                    const value = parseValueFromInput(e.target.value);
-                                    handleFilterChangeFromParent(filterKey, [isNaN(value) || value < actualMin ? actualMin : value, currentRange[1]]);
-                                }}
-                                min={unit !== "$" ? actualMin : undefined}
-                            />
-                        </div>
-                        <div className="flex-1">
-                             <label htmlFor={`max-${filterKey}`} className="text-xs text-gray-600 block mb-1">Max:</label>
-                             <Input
-                                id={`max-${filterKey}`}
-                                type={unit === "$" ? "text" : "number"}
-                                value={formatValueForInput(currentRange[1], false)}
-                                placeholder={unit === "$" ? `$${Number(actualMax).toLocaleString()}`: `${actualMax}${unit && unit !== "$" ? unit : ""}`}
-                                className="h-10 text-sm w-full border-gray-300"
-                                onChange={(e) => {
-                                    const value = parseValueFromInput(e.target.value);
-                                    handleFilterChangeFromParent(filterKey, [currentRange[0], isNaN(value) || value > actualMax ? actualMax : value]);
-                                }}
-                                max={unit !== "$" ? actualMax : undefined}
-                            />
-                        </div>
-                    </div>
-                    <div className="px-1 pt-2">
-                        <RangeSlider
-                            min={actualMin}
-                            max={actualMax}
-                            step={step}
-                            value={currentRange}
-                            onValueChange={(value) => handleFilterChangeFromParent(filterKey, value)}
-                            className="my-4"
-                        />
-                    </div>
-                </div>
-            )}
-        </div>
+      <div key={filterKey} className="mb-4">
+        <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider  mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2">
+          {label} {unit && unit !== "$" ? `(${unit})` : ''}
+          <span className="text-gray-500">{openFilterSections[filterKey] ? <Minus size={16} /> : <Plus size={16} />}</span>
+        </h3>
+        {openFilterSections[filterKey] && (
+          <div className="space-y-4 pt-2">
+            <div className="flex justify-between items-center gap-3">
+              <div className="flex-1">
+                <label htmlFor={`min-${filterKey}`} className="text-xs text-gray-600 block mb-1">Min:</label>
+                <Input
+                  id={`min-${filterKey}`}
+                  type={unit === "$" ? "text" : "number"}
+                  value={formatValueForInput(currentRange[0], true)}
+                  placeholder={unit === "$" ? `$${Number(actualMin).toLocaleString()}` : `${actualMin}${unit && unit !== "$" ? unit : ""}`}
+                  className="h-10 text-sm w-full border-gray-300"
+                  onChange={(e) => {
+                    const value = parseValueFromInput(e.target.value);
+                    handleFilterChangeFromParent(filterKey, [isNaN(value) || value < actualMin ? actualMin : value, currentRange[1]]);
+                  }}
+                  min={unit !== "$" ? actualMin : undefined}
+                />
+              </div>
+              <div className="flex-1">
+                <label htmlFor={`max-${filterKey}`} className="text-xs text-gray-600 block mb-1">Max:</label>
+                <Input
+                  id={`max-${filterKey}`}
+                  type={unit === "$" ? "text" : "number"}
+                  value={formatValueForInput(currentRange[1], false)}
+                  placeholder={unit === "$" ? `$${Number(actualMax).toLocaleString()}` : `${actualMax}${unit && unit !== "$" ? unit : ""}`}
+                  className="h-10 text-sm w-full border-gray-300"
+                  onChange={(e) => {
+                    const value = parseValueFromInput(e.target.value);
+                    handleFilterChangeFromParent(filterKey, [currentRange[0], isNaN(value) || value > actualMax ? actualMax : value]);
+                  }}
+                  max={unit !== "$" ? actualMax : undefined}
+                />
+              </div>
+            </div>
+            <div className="px-1 pt-2">
+              <RangeSlider
+                min={actualMin}
+                max={actualMax}
+                step={step}
+                value={currentRange}
+                onValueChange={(value) => handleFilterChangeFromParent(filterKey, value)}
+                className="my-4"
+              />
+            </div>
+          </div>
+        )}
+      </div>
     );
   };
 
@@ -280,176 +280,187 @@ const FilterUI = ({
     // className={`w-full lg:w-[300px] ... ${isFiltersOpen ? 'block' : 'hidden lg:block'} ...`}
     // So this component doesn't need to manage its own overall visibility state with an internal 'isFiltersOpen'
     <div className="bg-white rounded-lg shadow p-6 self-start"> {/* Removed container, width control, etc. */}
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-4">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-4">
         <SlidersHorizontal size={20} />
         <span className="text-lg font-semibold">Filters</span>
         {/* Close button for mobile, calls parent's toggle */}
         <button onClick={onPanelToggle} className="ml-auto lg:hidden text-gray-500 hover:text-gray-700">
-            <X size={20} />
+          <X size={20} />
         </button>
-        </div>
+      </div>
 
-        <div className="flex gap-4 mb-6 text-sm">
+      <div className="flex gap-4 mb-6 text-sm">
         <button onClick={clearAllFiltersFromParent} className="text-blue-600 hover:text-blue-800 underline">
-            Clear All
+          Clear All
         </button>
-        </div>
+      </div>
 
-        {/* Active Filter Tags */}
-        {activeFilterTags.length > 0 && (
+      {/* Active Filter Tags */}
+      {activeFilterTags.length > 0 && (
         <div className="mb-6">
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             {activeFilterTags.map((tag) => (
-                <div
+              <div
                 key={tag.id}
                 className="flex items-center bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm"
-                >
+              >
                 <span>{tag.label}</span>
                 <button onClick={tag.onRemove} className="ml-2 text-blue-600 hover:text-blue-800">
-                    <X size={14} />
+                  <X size={14} />
                 </button>
-                </div>
+              </div>
             ))}
-            </div>
+          </div>
         </div>
-        )}
+      )}
 
-        {/* Condition Checkboxes */}
+      {/* Condition Checkboxes */}
+      <div className="mb-6">
+        <h3
+          onClick={() => toggleSection("conditions")}
+          className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2"
+        >
+          Condition
+          <span className="text-gray-500">
+            {openFilterSections["conditions"] ? <Minus size={16} /> : <Plus size={16} />}
+          </span>
+        </h3>
+        {openFilterSections["conditions"] && (
+          <div className="space-y-3 pt-2">
+            {conditionOptions.map((condition) => {
+              const isChecked = filtersFromParent.selectedConditions.includes(condition);
+              return (
+                <div key={condition} className="flex items-center">
+                  <button
+                    type="button"
+                    role="checkbox"
+                    aria-checked={isChecked}
+                    onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
+                    className={`w-4 h-4 rounded-sm border flex items-center justify-center mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${isChecked ? "bg-black border-black" : "bg-white border-gray-400"}`}
+                  >
+                    {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
+                  </button>
+                  <label
+                    className="text-sm font-medium cursor-pointer"
+                    onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
+                  >
+                    {condition}
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <hr className="my-4" />
+
+      {/* Render Range Sliders dynamically */}
+      {rangeFilterDefinitionsFromParent.map(definition => renderRangeSliderGroup(definition))}
+
+      {/* Statically defined dynamic checkbox groups (Brand, Model, etc.) */}
+      {Object.entries(staticOptionsForDynamicFilters).map(([key, options]) => {
+        const title = key.replace(/_/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+        return renderCheckboxGroup(title, key, options, key);
+      })}
+
+
+      {/* Advanced Options Section (from WordPress filters) */}
+      {Object.keys(wordpressFiltersFromParent).length > 0 && (
         <div className="mb-6">
-            <h3
-                onClick={() => toggleSection("conditions")}
-                className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2"
-            >
-                Condition
-                <span className="text-gray-500">
-                    {openFilterSections["conditions"] ? <Minus size={16} /> : <Plus size={16} />}
-                </span>
-            </h3>
-            {openFilterSections["conditions"] && (
-                <div className="space-y-3 pt-2">
-                    {conditionOptions.map((condition) => {
-                    const isChecked = filtersFromParent.selectedConditions.includes(condition);
-                    return (
-                        <div key={condition} className="flex items-center">
-                        <button
-                            type="button"
-                            role="checkbox"
-                            aria-checked={isChecked}
-                            onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
-                            className={`w-4 h-4 rounded-sm border flex items-center justify-center mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${isChecked ? "bg-black border-black" : "bg-white border-gray-400"}`}
-                        >
-                            {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
-                        </button>
-                        <label
-                            className="text-sm font-medium cursor-pointer"
-                            onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
-                        >
-                            {condition}
-                        </label>
-                        </div>
-                    );
-                    })}
-                </div>
-            )}
-        </div>
+          <h3
+            onClick={() => toggleSection("advancedOptions")}
+            className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base"
+          >
+            Advanced options
+            <span className={`text-white rounded-full w-6 h-6 flex items-center justify-center ${openFilterSections["advancedOptions"] ? "bg-blue-600" : "bg-gray-400"}`}>
+              {openFilterSections["advancedOptions"] ? <Minus size={14} /> : <Plus size={14} />}
+            </span>
+          </h3>
+          {openFilterSections["advancedOptions"] && (
+            <div className="space-y-4 pt-2">
+              <div className="border-t border-gray-200 my-2"></div>
+              {Object.keys(wordpressFiltersFromParent).length > 0 && (
+                <div className="mb-6">
         
-        <hr className="my-4" />
+                  {openFilterSections["advancedOptions"] && (
+                    <div className="space-y-4 pt-2">
+                      {Object.entries(wordpressFiltersFromParent).map(([filterKey, filterData]) => {
+                        // **UPDATED LOGIC**: Check if the filter key exists in the static definitions.
+                        // If it does, we skip rendering it here to avoid duplication.
+                        if (staticOptionsForDynamicFilters[filterKey] || rangeFilterDefinitionsFromParent.some(def => def.wpKey === filterKey || def.filterKey === filterKey)) {
+       
+                          return null;
+                        }
 
-        {/* Render Range Sliders dynamically */}
-        {rangeFilterDefinitionsFromParent.map(definition => renderRangeSliderGroup(definition))}
+                        const filterTitle = filterData.label || filterKey.replace(/_/g, " ").split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+                        const options = Array.isArray(filterData) ? filterData : (Array.isArray(filterData.options) ? filterData.options : []);
 
-        {/* Statically defined dynamic checkbox groups (Brand, Model, etc.) */}
-        {Object.entries(staticOptionsForDynamicFilters).map(([key, options]) => {
-            const title = key.replace(/_/g, " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-            return renderCheckboxGroup(title, key, options, key);
-        })}
+                        if (options.length === 0) return null; // Don't render if no options
 
-
-        {/* Advanced Options Section (from WordPress filters) */}
-        {Object.keys(wordpressFiltersFromParent).length > 0 && (
-            <div className="mb-6">
-                <h3
-                onClick={() => toggleSection("advancedOptions")}
-                className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base"
-                >
-                Advanced options
-                <span className={`text-white rounded-full w-6 h-6 flex items-center justify-center ${openFilterSections["advancedOptions"] ? "bg-blue-600" : "bg-gray-400"}`}>
-                    {openFilterSections["advancedOptions"] ? <Minus size={14} /> : <Plus size={14} />}
-                </span>
-                </h3>
-                {openFilterSections["advancedOptions"] && (
-                <div className="space-y-4 pt-2">
-                    <div className="border-t border-gray-200 my-2"></div>
-                    {Object.entries(wordpressFiltersFromParent).map(([filterKey, filterData]) => {
-                    // Skip if this filterKey is already handled by static options or range filters
-                    if (staticOptionsForDynamicFilters[filterKey] || rangeFilterDefinitionsFromParent.some(def => def.wpKey === filterKey || def.filterKey === filterKey)) {
-                        return null;
-                    }
-                    
-                    const filterTitle = filterData.label || filterKey.replace(/_/g, " ").split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-                    const options = Array.isArray(filterData.options) ? filterData.options : []; // Assuming options are {label: 'X', value: 'x'} or just strings
-
-                    if (options.length === 0) return null; // Don't render if no options
-
-                    return (
-                        <div key={filterKey} className="pb-2 border-b border-gray-200 last:border-b-0">
-                        <h4
-                            onClick={() => toggleSection(filterKey)} // Ensure toggleSection handles these keys
-                            className="font-medium mb-2 flex items-center justify-between cursor-pointer text-sm"
-                        >
-                            {filterTitle}
-                            <span className="text-gray-500">
-                            {openFilterSections[filterKey] ? <Minus size={14} /> : <Plus size={14} />}
-                            </span>
-                        </h4>
-                        {openFilterSections[filterKey] && (
-                            <div className="space-y-2 pt-2">
-                            {options.map((option) => {
-                                const optionValue = typeof option === 'object' && option !== null && option.value !== undefined ? option.value : option;
-                                const optionLabel = typeof option === 'object' && option !== null && option.label !== undefined ? option.label : option;
-                                const isChecked = filtersFromParent.selectedDynamicFilters[filterKey]?.includes(optionValue);
-                                return (
-                                <div key={String(optionValue)} className="flex items-center">
-                                    <button
-                                    type="button"
-                                    role="checkbox"
-                                    aria-checked={isChecked}
-                                    onClick={() =>
-                                        handleFilterChangeFromParent("selectedDynamicFilters", {
-                                        key: filterKey, // The actual meta_key from WordPress
-                                        value: optionValue,
-                                        checked: !isChecked,
-                                        })
-                                    }
-                                    className={`w-4 h-4 rounded-sm border flex items-center justify-center mr-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${isChecked ? "bg-black border-black" : "bg-white border-gray-400"}`}
-                                    >
-                                    {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
-                                    </button>
-                                    <label
-                                    className="text-sm cursor-pointer"
-                                    onClick={() =>
-                                        handleFilterChangeFromParent("selectedDynamicFilters", {
-                                        key: filterKey,
-                                        value: optionValue,
-                                        checked: !isChecked,
-                                        })
-                                    }
-                                    >
-                                    {optionLabel}
-                                    </label>
-                                </div>
-                                );
-                            })}
-                            </div>
-                        )}
-                        </div>
-                    );
-                    })}
+                        return (
+                          <div key={filterKey} className="pb-2 border-b border-gray-200 last:border-b-0">
+                            <h4
+                              onClick={() => toggleSection(filterKey)}
+                              className="font-semibold mb-2 flex items-center justify-between cursor-pointer text-base"
+                            >
+                              {filterTitle}
+                              <span className="text-gray-500">
+                                {openFilterSections[filterKey] ? <Minus size={14} /> : <Plus size={14} />}
+                              </span>
+                            </h4>
+                            {openFilterSections[filterKey] && (
+                              <div className="space-y-2 pt-2">
+                                {options.map((option) => {
+                                  const optionValue = typeof option === 'object' && option !== null && option.value !== undefined ? option.value : option;
+                                  const optionLabel = typeof option === 'object' && option !== null && option.label !== undefined ? option.label : option;
+                                  const isChecked = filtersFromParent.selectedDynamicFilters[filterKey]?.includes(optionValue);
+                                  return (
+                                    <div key={String(optionValue)} className="flex items-center">
+                                      <button
+                                        type="button"
+                                        role="checkbox"
+                                        aria-checked={isChecked}
+                                        onClick={() =>
+                                          handleFilterChangeFromParent("selectedDynamicFilters", {
+                                            key: filterKey,
+                                            value: optionValue,
+                                            checked: !isChecked,
+                                          })
+                                        }
+                                        className={`w-4 h-4 rounded-sm border flex items-center justify-center mr-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${isChecked ? "bg-black border-black" : "bg-white border-gray-400"}`}
+                                      >
+                                        {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
+                                      </button>
+                                      <label
+                                        className="text-sm cursor-pointer"
+                                        onClick={() =>
+                                          handleFilterChangeFromParent("selectedDynamicFilters", {
+                                            key: filterKey,
+                                            value: optionValue,
+                                            checked: !isChecked,
+                                          })
+                                        }
+                                      >
+                                        {optionLabel}
+                                      </label>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
-                )}
+              )}
             </div>
-        )}
+          )}
+        </div>
+      )}
     </div>
   )
 }

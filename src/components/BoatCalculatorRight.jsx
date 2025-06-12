@@ -12,12 +12,12 @@ function BoatCalculatorRight({ monthlyPayment, loanAmountAfterDownPayment, credi
   };
 
   return (
-    <div className="rounded-[17px] bg-[#EFF2F9] py-9 px-10 flex flex-col items-center h-full justify-center"> {/* Added h-full and justify-center for better alignment */}
+    <div className="rounded-[17px] bg-[#EFF2F9] py-9 px-10 flex flex-col items-center h-full justify-center">
       <h1 className="text-2xl font-medium text-[#00000099]">
         Total monthly payment
       </h1>
       <h1 className="text-3xl font-medium mt-1">{formatCurrency(monthlyPayment)}</h1>
-      <div className="w-full flex justify-between text-lg font-medium text-[#00000099] mt-4"> {/* Added mt-4 */}
+      <div className="w-full flex justify-between text-lg font-medium text-[#00000099] mt-4">
         <span>Loan amount</span>
         <span>{formatCurrency(loanAmountAfterDownPayment)}</span>
       </div>

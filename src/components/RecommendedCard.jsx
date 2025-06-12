@@ -1,10 +1,13 @@
 import React from "react";
 import { useComparison } from "../context/ComparisonContext"; // Assuming this context exists and is set up
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useYacht } from '../context/YachtContext'; // Adjust path if needed
 
 function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from props, will handle navigation internally
   const { selectedItems, toggleItem } = useComparison();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); // Initialize useNavigateconst { selectYacht } = useYacht()
+  const { selectYacht } = useYacht();
+
 
   // Ensure yacht is not null or undefined before trying to access its properties
   if (!yacht || !yacht.id) {
@@ -27,7 +30,9 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
     // Prevent navigation if the click is on the compare button or its children
     if (e.target.closest('.compare-button')) {
       return;
+      
     }
+      selectYacht(yacht);
     // Navigate to Home page with yacht data in state
     navigate(`/boat/${yacht.slug || yacht.id}`, { state: { yachtData: yacht } });
   };
