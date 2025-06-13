@@ -20,12 +20,16 @@ function BoatCalculator({ msrp = initialMsrp }) {
   const [downPaymentPercentage, setDownPaymentPercentage] = useState(defaultDownPaymentPercentage);
   const [downPaymentAmount, setDownPaymentAmount] = useState(currentMsrp * (defaultDownPaymentPercentage / 100));
   
-  // ADDED: State to hold the raw input value for the down payment field
+  // State to hold the raw input value for the down payment field
   const [downPaymentInput, setDownPaymentInput] = useState(
     (currentMsrp * (defaultDownPaymentPercentage / 100)).toString()
   );
 
   const [loanTermInYears, setLoanTermInYears] = useState(defaultLoanTermInYears);
+  // ADDED: State to hold the raw input value for the loan term field
+  const [loanTermInput, setLoanTermInput] = useState(defaultLoanTermInYears.toString());
+
+
   const [creditRatingIndex, setCreditRatingIndex] = useState(0);
   const [monthlyPayment, setMonthlyPayment] = useState(0);
 
@@ -94,8 +98,26 @@ function BoatCalculator({ msrp = initialMsrp }) {
     }
   };
 
+  // UPDATED: Loan Term Slider handler now also updates the text input
   const handleLoanTermChange = (years) => {
     setLoanTermInYears(years);
+    setLoanTermInput(years.toString()); // Update the input field
+  };
+
+  // ADDED: Handler for the manual loan term input field
+  const handleLoanTermInputChange = (e) => {
+    const rawValue = e.target.value;
+    setLoanTermInput(rawValue); // Let user type freely
+
+    const numericValue = parseInt(rawValue.replace(/[^0-9]/g, ''), 10);
+
+    if (!isNaN(numericValue)) {
+      // Ensure the input value is within the reasonable range of loan terms
+      const cappedYears = Math.min(Math.max(numericValue, 1), 30); // Assuming 1 to 30 years is a reasonable range
+      setLoanTermInYears(cappedYears); // This will make the slider move
+    } else if (rawValue === "") {
+      setLoanTermInYears(0); // Or a default like 10, depending on desired behavior
+    }
   };
 
   const handleCreditRatingChange = () => {
@@ -108,6 +130,7 @@ function BoatCalculator({ msrp = initialMsrp }) {
     setDownPaymentAmount(newDownPayment);
     setDownPaymentInput(formatCurrencyDisplay(newDownPayment, false)); // Reset input field
     setLoanTermInYears(defaultLoanTermInYears);
+    setLoanTermInput(defaultLoanTermInYears.toString()); // Reset loan term input
     setCreditRatingIndex(0);
   };
 
@@ -138,6 +161,8 @@ function BoatCalculator({ msrp = initialMsrp }) {
             onDownPaymentInputChange={handleDownPaymentInputChange} // Pass the handler
             loanTermInYears={loanTermInYears}
             onLoanTermChange={handleLoanTermChange}
+            loanTermInput={loanTermInput} // Pass the loan term input value
+            onLoanTermInputChange={handleLoanTermInputChange} // Pass the loan term input handler
             creditRatingText={creditRatingText}
             onCreditRatingChange={handleCreditRatingChange}
             onResetCalculator={handleResetCalculator}

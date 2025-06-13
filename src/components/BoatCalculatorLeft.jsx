@@ -26,6 +26,8 @@ function BoatCalculatorLeft({
   onDownPaymentInputChange, // Handler for the input field
   loanTermInYears,
   onLoanTermChange,
+  loanTermInput, // ADDED: Value for the loan term input field
+  onLoanTermInputChange, // ADDED: Handler for the loan term input field
   creditRatingText,
   onCreditRatingChange,
   onResetCalculator,
@@ -42,8 +44,17 @@ function BoatCalculatorLeft({
   };
   
   const getSliderValueFromYears = (years, marks) => {
-    const foundMark = marks.find(mark => mark.value === years);
-    return foundMark ? foundMark.value : marks[0].value;
+    // Find the closest mark value if the exact year isn't a mark
+    let closestMark = marks[0].value;
+    let minDiff = Math.abs(years - closestMark);
+    for (let i = 1; i < marks.length; i++) {
+        const diff = Math.abs(years - marks[i].value);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closestMark = marks[i].value;
+        }
+    }
+    return closestMark;
   };
 
   return (
@@ -59,7 +70,7 @@ function BoatCalculatorLeft({
           aria-label="Down payment percentage"
           value={downPaymentPercentage}
           getAriaValueText={(value) => `${Math.round(value)}%`}
-          // UPDATED: Allow any value within the range
+          // Allow any value within the range
           step={1} 
           valueLabelDisplay="off"
           marks={downPaymentMarks}
@@ -83,7 +94,7 @@ function BoatCalculatorLeft({
             <input
               type="text"
               value={downPaymentInput}
-              // UPDATED: Use the handler from the parent
+              // Use the handler from the parent
               onChange={onDownPaymentInputChange}
               className="border border-gray-300 rounded p-2 w-full pl-6"
               placeholder="Enter amount"
@@ -95,6 +106,8 @@ function BoatCalculatorLeft({
       <div className="mt-[35px]">
         <div className="flex justify-between">
           <span className="font-medium text-lg">Loan duration</span>
+          {/* Display the current loan term in years */}
+          <span className="font-normal text-lg text-[#000000B2]">{loanTermInYears} years</span>
         </div>
         <Slider
           className="mt-[30px]"
@@ -114,6 +127,20 @@ function BoatCalculatorLeft({
             '& .MuiSlider-markLabel': { color: '#555'}
           }}
         />
+      </div>
+
+      {/* ADDED: Manual Input for Loan Duration */}
+      <div className="mt-4">
+          <label className="text-sm text-gray-600 block mb-1">Enter loan duration manually (years):</label>
+          <input
+            type="number" // Use type="number" for years
+            value={loanTermInput}
+            onChange={onLoanTermInputChange}
+            className="border border-gray-300 rounded p-2 w-full"
+            placeholder="Enter years"
+            min="1" // Add min and max for number input
+            max="30"
+          />
       </div>
 
       <div className="mt-[30px] flex justify-between items-center">
