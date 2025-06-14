@@ -26,7 +26,7 @@ function BoatCalculatorRight({ monthlyPayment, loanAmountAfterDownPayment, credi
         <span>Credit rating</span>
         <span>{creditRatingText}</span>
       </div>
-      <button className="w-full bg-[#274989] py-3.5 text-lg font-normal mt-8 rounded-[8px] cursor-pointer text-white">
+      <button className="w-full bg-[#274989] py-3 text-lg font-normal mt-8 rounded-[8px] cursor-pointer text-white">
         Get prequalified
       </button>
     </div>

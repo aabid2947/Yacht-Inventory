@@ -21,7 +21,7 @@ const FilterUI = ({
   const [activeFilterTags, setActiveFilterTags] = useState([])
 
   // Options that might be static or could be derived from wordpressFiltersFromParent if available
-  const conditionOptions = useMemo(() => ["New", "Used", "Certified Pre-Owned"], []);
+  const conditionOptions = useMemo(() => ["New", "Used", "Brokerage"], []);
 
   // Example dynamic filter keys that use pre-defined options if not in wordpressFiltersFromParent
   const staticOptionsForDynamicFilters = useMemo(() => ({
@@ -138,7 +138,7 @@ const FilterUI = ({
           className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2"
         >
           {title}
-          <span className="text-gray-500">
+                    <span className="text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%]">
             {openFilterSections[sectionKey] ? <Minus size={16} /> : <Plus size={16} />}
           </span>
         </h3>
@@ -222,7 +222,7 @@ const FilterUI = ({
       <div key={filterKey} className="mb-4">
         <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider  mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2">
           {label} {unit && unit !== "$" ? `(${unit})` : ''}
-          <span className="text-gray-500">{openFilterSections[filterKey] ? <Minus size={16} /> : <Plus size={16} />}</span>
+                    <span className="text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%]">{openFilterSections[filterKey] ? <Minus size={16} /> : <Plus size={16} />}</span>
         </h3>
         {openFilterSections[filterKey] && (
           <div className="space-y-4 pt-2">
@@ -258,7 +258,7 @@ const FilterUI = ({
                 />
               </div>
             </div>
-            <div className="px-1 pt-2">
+            <div className="px-1 pt-2 ">
               <RangeSlider
                 min={actualMin}
                 max={actualMax}
@@ -291,7 +291,7 @@ const FilterUI = ({
       </div>
 
       <div className="flex gap-4 mb-6 text-sm">
-        <button onClick={clearAllFiltersFromParent} className="text-blue-600 hover:text-blue-800 underline">
+        <button onClick={clearAllFiltersFromParent} className="text-gray-600 hover:text-blue-800 underline">
           Clear All
         </button>
       </div>
@@ -322,12 +322,12 @@ const FilterUI = ({
           className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2"
         >
           Condition
-          <span className="text-gray-500">
+                    <span className="text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%]">
             {openFilterSections["conditions"] ? <Minus size={16} /> : <Plus size={16} />}
           </span>
         </h3>
         {openFilterSections["conditions"] && (
-          <div className="space-y-3 pt-2">
+          <div className=" pt-2 flex items-center justify-between">
             {conditionOptions.map((condition) => {
               const isChecked = filtersFromParent.selectedConditions.includes(condition);
               return (
@@ -342,7 +342,7 @@ const FilterUI = ({
                     {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
                   </button>
                   <label
-                    className="text-sm font-medium cursor-pointer"
+                    className="text-sm text-center font-medium cursor-pointer"
                     onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
                   >
                     {condition}
@@ -354,7 +354,7 @@ const FilterUI = ({
         )}
       </div>
 
-      <hr className="my-4" />
+  
 
       {/* Render Range Sliders dynamically */}
       {rangeFilterDefinitionsFromParent.map(definition => renderRangeSliderGroup(definition))}
@@ -406,7 +406,7 @@ const FilterUI = ({
                               className="font-semibold mb-2 flex items-center justify-between cursor-pointer text-base"
                             >
                               {filterTitle}
-                              <span className="text-gray-500">
+                                        <span className="text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%]">
                                 {openFilterSections[filterKey] ? <Minus size={14} /> : <Plus size={14} />}
                               </span>
                             </h4>

@@ -36,7 +36,7 @@ export default function Comparison() {
     const handleClearAll = () => {
         try {
             clearSelection();
-            navigate('/Inventory2');
+            navigate('/');
         } catch (error) {
             console.log(error);
         }
@@ -44,7 +44,7 @@ export default function Comparison() {
 
     const handleRemoveItem = (item) => {
         toggleItem(item);
-            navigate('/Inventory2');
+            navigate('/');
       
     };
 

@@ -30,9 +30,9 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
     // Prevent navigation if the click is on the compare button or its children
     if (e.target.closest('.compare-button')) {
       return;
-      
+
     }
-      selectYacht(yacht);
+    selectYacht(yacht);
     // Navigate to Home page with yacht data in state
     navigate(`/boat/${yacht.slug || yacht.id}`, { state: { yachtData: yacht } });
   };
@@ -44,10 +44,10 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
 
   return (
     <article
-      className="text-black rounded-none w-full cursor-pointer"
+      className="text-black rounded-none w-full cursor-pointer "
       onClick={handleCardClick}
     >
-      <div className="flex flex-col items-start p-3 w-full bg-white rounded-[20px] shadow-md hover:shadow-xl transition-shadow duration-300">
+      <div className="h-[480px] sm:h-[520px] md:h-[480px] flex flex-col items-start p-3 w-full bg-white rounded-[20px] shadow-md hover:shadow-xl transition-shadow duration-300">
 
         <figure className="w-full relative"> {/* Added relative for positioning promotions */}
           <img
@@ -64,7 +64,7 @@ function RecommendedCard({ yacht, imageUrl }) { // Removed onYachtClick from pro
           )}
         </figure>
         <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
-          <h2 className="text-md sm:text-xl md:text-[22px] tracking-wide font-medium text-black truncate" title={yacht.title?.rendered}>
+          <h2 className="text-md sm:text-xl md:text-[22px] tracking-wide font-medium text-black line-clamp-2 break-words leading-snug" title={yacht.title?.rendered}>
             {yacht.title?.rendered || "N/A"}
           </h2>
           <p className="mt-1 text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
