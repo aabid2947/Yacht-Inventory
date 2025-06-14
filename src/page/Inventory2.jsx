@@ -369,9 +369,9 @@ const Inventory2 = () => {
 
   return (
     <div className="min-h-screen bg-[#f0f0f0]">
-      <main className="flex justify-center mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{maxWidth: '1800px'}}>
+      <main className="flex justify-center mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{maxWidth: '1700px'}}>
         <div className="flex flex-col lg:flex-row gap-8 w-full">
-          <div className={`w-full lg:w-[300px] flex-shrink-0 ${isFiltersOpen ? 'block' : 'hidden lg:block'} self-start`}>
+          <div className={`w-full lg:w-[350px] flex-shrink-0 ${isFiltersOpen ? 'block' : 'hidden lg:block'} self-start`}>
             {(!loading || yachts.length > 0 || Object.keys(wordpressFilters).length > 0) ? (
               <FilterUI
                 filters={filters}
