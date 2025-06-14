@@ -7,7 +7,7 @@ import Screen1 from "./page/Screen1";
 import Screen2 from "./page/Screen2";
 import Comparison from "./page/Comparison";
 import { ComparisonProvider } from "./context/ComparisonContext";
-import CompareButton from "./components/CompareButton";
+import CompareButton from "./components/ComparisonFloatingButton";
 import Inventory2 from "./page/Inventory2";
 import { YachtProvider } from './context/YachtContext';
 
