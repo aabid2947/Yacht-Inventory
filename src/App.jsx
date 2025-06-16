@@ -10,6 +10,7 @@ import { ComparisonProvider } from "./context/ComparisonContext";
 import CompareButton from "./components/ComparisonFloatingButton";
 import Inventory2 from "./page/Inventory2";
 import { YachtProvider } from './context/YachtContext';
+import FadeTransitionWrapper from "./components/FadeTransitionWrapper";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           </Routes>
           <Footer />
           <CompareButton />
+          <FadeTransitionWrapper/>
         </div>
       </Router>
       </YachtProvider>

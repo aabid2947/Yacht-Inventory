@@ -33,6 +33,13 @@ export default function Comparison() {
     // For debugging: Log selectedItems to see their structure and content
     // console.log("Selected items in Comparison page:", JSON.stringify(selectedItems, null, 2));
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: "smooth"
+        });
+    }, []);
     const handleClearAll = () => {
         try {
             clearSelection();
@@ -44,8 +51,10 @@ export default function Comparison() {
 
     const handleRemoveItem = (item) => {
         toggleItem(item);
-            navigate('/');
-      
+        if(selectedItems.length <= 2){
+            navigate('/')
+        }
+
     };
 
     const itemsToDisplay = selectedItems.slice(0, 3);
@@ -111,7 +120,7 @@ export default function Comparison() {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
                 <button
                     className="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-md flex items-center gap-2 text-sm cursor-pointer w-full sm:w-auto justify-center shadow"
-                    onClick={() => navigate('/')}
+                    onClick={handleClearAll}
                 >
                     <span className="text-md">←</span> Back to Search
                 </button>
@@ -172,7 +181,7 @@ export default function Comparison() {
                         ))}
                         {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
                             <div key={`engine-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 md:border-l md:pl-4">
-                               {Array(4).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
+                                {Array(4).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
                             </div>
                         ))}
                     </div>
@@ -195,7 +204,7 @@ export default function Comparison() {
                         ))}
                         {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
                             <div key={`spec-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 md:border-l md:pl-4">
-                               {Array(2).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
+                                {Array(2).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
                             </div>
                         ))}
                     </div>

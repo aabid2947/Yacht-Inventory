@@ -1,8 +1,15 @@
 import React from "react";
+import { useLocation } from "react-router-dom"; // <-- import useLocation
 import hamburger from "./../assets/hamburger.svg";
 import carImages from "./../assets/carImages.png";
+import { useYacht } from "../context/YachtContext";
 
 function Header() {
+  const { yachtImageURL } = useYacht();
+  const location = useLocation(); // <-- get current location
+
+  const isBoatPage = location.pathname.startsWith("/boat"); // match /boat or /boat/:slug
+
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       <nav className="py-4 px-4 sm:py-[21px] sm:px-[46px] border rounded-2xl border-[#CFCFCF] flex justify-between items-center">
@@ -36,12 +43,22 @@ function Header() {
         </div>
       </nav>
 
-      {/* Hero Image - Responsive sizing */}
-      <img
-        src={carImages}
-        className="w-full h-auto object-cover rounded-2xl"
-        alt="Car inventory"
-      />
+      {/* Hero Image - show only on /boat route */}
+      {isBoatPage? (
+        <img
+          src={
+            yachtImageURL 
+          }
+          className="w-full h-auto object-cover rounded-2xl"
+          alt="Yacht"
+        />
+      ): <img
+          src={
+            carImages
+          }
+          className="w-full h-auto object-cover rounded-2xl"
+          alt="Yacht"
+        />}
     </section>
   );
 }

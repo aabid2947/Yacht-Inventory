@@ -95,7 +95,7 @@ function Home2Right({
       )}
 
       {/* Compare Button - appears when 3 items are selected */}
-      {selectedItems.length === 3 && (
+      {selectedItems.length >= 2 && (
         <div className="fixed bottom-8 right-8 z-50">
           <Button
             onClick={handleCompareNavigation}

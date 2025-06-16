@@ -168,16 +168,19 @@ function BoatCalculator({ msrp = initialMsrp }) {
             onResetCalculator={handleResetCalculator}
           />
         </div>
-        <div className="mt-6 lg:mt-0">
+        <div className="mt-6 lg:mt-0 grid grid-rows-[3fr_1fr]">
           <BoatCalculatorRight
             monthlyPayment={monthlyPayment}
             loanAmountAfterDownPayment={currentMsrp - downPaymentAmount}
             creditRatingText={creditRatingText}
           />
-          <p className="mt-6 md:mt-10 text-sm md:text-base text-[#00000099]">
+          <div>
+              <p className="mt-6 md:mt-10 text-sm md:text-base bg-[#fff] text-[#00000099]">
             This monthly payment amount is only an estimate; your exact monthly
             payment will be finalized at the time of purchase.
           </p>
+          </div>
+          
         </div>
       </div>
     </div>

@@ -9,9 +9,11 @@ export const useYacht = () => useContext(YachtContext);
 // Create the Provider component
 export const YachtProvider = ({ children }) => {
   const [yachtData, setYachtData] = useState(null);
+  const [yachtImageURL,setYachtImageURL] = useState(null)
 
   // This function will be called from the card click handler
-  const selectYacht = (data) => {
+  const selectYacht = (data,imageURL) => {
+    setYachtImageURL(imageURL)
     setYachtData(data);
   };
 
@@ -19,7 +21,8 @@ export const YachtProvider = ({ children }) => {
   const value = {
     yachtData,
     selectYacht,
-    setYachtData // Exposing the raw setter for direct fetching in the Home component
+    setYachtData, // Exposing the raw setter for direct fetching in the Home component
+    yachtImageURL
   };
 
   return (

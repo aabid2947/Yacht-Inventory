@@ -18,13 +18,24 @@ function Home() {
   const {yachtData} = useYacht(); // This is the 'yachtData' from context
   const { selectedItems } = useComparison(); // Get selected items from context
   const { slug } = useParams(); // Get slug from URL
-  const [boatData, setBoatData] = useState(location.state?.yachtData || null); // Initial state from location, or null
-  const [loading, setLoading] = useState(!location.state?.yachtData); // True if no initial data
+  const [boatData, setBoatData] = useState(null); // Initial state from location, or null
+  const [loading, setLoading] = useState(true); // True if no initial data
   const navigate = useNavigate()
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    console.log(yachtData)
   }, [yachtData]); // PROBLEM 2: Dependencies are problematic
 
+  useEffect(() => {
+  if (location.state?.yachtData) {
+    setBoatData(location.state.yachtData);
+    setLoading(false);
+  } else if (yachtData) {
+    setBoatData(yachtData);
+    setLoading(false);
+  }
+}, [location.state?.yachtData, yachtData]);
 
   if (loading) {
     return <div className="container mx-auto px-4 py-8 text-center">Loading yacht details...</div>;
