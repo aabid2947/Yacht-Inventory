@@ -3,6 +3,9 @@ import { useLocation } from "react-router-dom"; // <-- import useLocation
 import hamburger from "./../assets/hamburger.svg";
 import carImages from "./../assets/carImages.png";
 import { useYacht } from "../context/YachtContext";
+import rightBoat from "./../assets/rightBoat.png"
+import leftBoat from "./../assets/leftBoat.png"
+
 
 function Header() {
   const { yachtImageURL } = useYacht();
@@ -44,21 +47,33 @@ function Header() {
       </nav>
 
       {/* Hero Image - show only on /boat route */}
-      {isBoatPage? (
+      {isBoatPage ? (
+        <div className="grid grid-cols-[25%_50%_25%] gap-4">
+          <img
+            src={leftBoat}
+            className="w-full h-100 object-cover rounded-2xl"
+            alt="Left Boat"
+          />
+          <img
+            src={yachtImageURL}
+            className="w-full h-100 object-cover rounded-2xl"
+            alt="Center Yacht"
+          />
+          <img
+            src={rightBoat}
+            className="w-full h-100 object-cover rounded-2xl"
+            alt="Right Boat"
+          />
+        </div>
+
+      ) : (
         <img
-          src={
-            yachtImageURL 
-          }
+          src={carImages}
           className="w-full h-auto object-cover rounded-2xl"
-          alt="Yacht"
+          alt="Car Image"
         />
-      ): <img
-          src={
-            carImages
-          }
-          className="w-full h-auto object-cover rounded-2xl"
-          alt="Yacht"
-        />}
+      )}
+
     </section>
   );
 }
