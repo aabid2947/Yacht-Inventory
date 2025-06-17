@@ -311,14 +311,14 @@ const FilterUI = ({
       <div className="mb-6">
         <h3
           onClick={() => toggleSection("conditions")}
-          className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2"
+          className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base   pb-2"
         >
           Condition
-           <span className={`text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${openFilterSections["conditions"] ? 'rotate-0' : '-rotate-180'}`}>
+           {/* <span className={`text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${openFilterSections["conditions"] ? 'rotate-0' : '-rotate-180'}`}>
             {openFilterSections["conditions"] ? <Minus size={16} /> : <Plus size={16} />}
-          </span>
+          </span> */}
         </h3>
-        <div className={`transition-all duration-300 ease-in-out overflow-hidden ${openFilterSections["conditions"] ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`transition-all duration-300 ease-in-out overflow-hidden 'max-h-96 opacity-100' `}>
             <div className=" pt-2 flex items-center justify-between">
               {conditionOptions.map((condition) => {
                 const isChecked = filtersFromParent.selectedConditions.includes(condition);

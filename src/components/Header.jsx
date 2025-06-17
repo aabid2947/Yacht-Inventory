@@ -1,27 +1,35 @@
-import React from "react";
-import { useLocation } from "react-router-dom"; // <-- import useLocation
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import hamburger from "./../assets/hamburger.svg";
 import carImages from "./../assets/carImages.png";
 import { useYacht } from "../context/YachtContext";
-import rightBoat from "./../assets/rightBoat.png"
-import leftBoat from "./../assets/leftBoat.png"
-
 
 function Header() {
   const { yachtImageURL } = useYacht();
-  const location = useLocation(); // <-- get current location
+  const location = useLocation();
 
-  const isBoatPage = location.pathname.startsWith("/boat"); // match /boat or /boat/:slug
+  const isBoatPage = location.pathname.startsWith("/boat");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === yachtImageURL.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? yachtImageURL.length - 1 : prev - 1
+    );
+  };
 
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       <nav className="py-4 px-4 sm:py-[21px] sm:px-[46px] border rounded-2xl border-[#CFCFCF] flex justify-between items-center">
-        {/* Left - Logo */}
         <span className="font-normal text-xl sm:text-2xl uppercase text-center flex justify-center items-center font-[nusar]">
           INVENTORY
         </span>
 
-        {/* Mid - Navigation (hidden on mobile) */}
         <div className="hidden md:flex flex-row gap-1 lg:gap-2">
           {["Home", "About us", "Inventory", "Services"].map((e, index) => (
             <a
@@ -33,7 +41,6 @@ function Header() {
           ))}
         </div>
 
-        {/* Right - Actions */}
         <div className="flex items-center justify-center gap-4 sm:gap-6">
           <button className="hidden sm:flex text-sm sm:text-lg text-[#FFFFFF] bg-black py-2 px-4 sm:py-3.5 sm:px-6 rounded-lg cursor-pointer hover:bg-gray-800 transition-colors">
             Add listing
@@ -46,26 +53,39 @@ function Header() {
         </div>
       </nav>
 
-      {/* Hero Image - show only on /boat route */}
+      {/* Hero Carousel for /boat */}
       {isBoatPage ? (
-        <div className="grid grid-cols-[25%_50%_25%] gap-4">
-          <img
-            src={leftBoat}
-            className="w-full h-100 object-cover rounded-2xl"
-            alt="Left Boat"
-          />
-          <img
-            src={yachtImageURL}
-            className="w-full h-100 object-cover rounded-2xl"
-            alt="Center Yacht"
-          />
-          <img
-            src={rightBoat}
-            className="w-full h-100 object-cover rounded-2xl"
-            alt="Right Boat"
-          />
-        </div>
+        <div className="w-full h-[400px] flex items-center justify-center bg-black rounded-2xl relative overflow-hidden">
+          {yachtImageURL.length > 0 ? (
+            <img
+              src={yachtImageURL[currentIndex]}
+              alt={`Yacht ${currentIndex + 1}`}
+              className="w-full max-h-[400px] object-cover transition-all duration-500 rounded-2xl"
+            />
+          ) : (
+            <div className="w-full h-[400px] bg-gray-200 flex items-center justify-center rounded-2xl text-gray-600">
+              No yacht images
+            </div>
+          )}
 
+          {/* Navigation Arrows */}
+          {yachtImageURL.length > 1 && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-black px-3 py-1 rounded-full shadow"
+              >
+                ‹
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-black px-3 py-1 rounded-full shadow"
+              >
+                ›
+              </button>
+            </>
+          )}
+        </div>
       ) : (
         <img
           src={carImages}
@@ -73,7 +93,6 @@ function Header() {
           alt="Car Image"
         />
       )}
-
     </section>
   );
 }

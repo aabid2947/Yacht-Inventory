@@ -46,7 +46,7 @@ const Inventory2 = () => {
   const [mediaCache, setMediaCache] = useState({});
   const [yachtImages, setYachtImages] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 6;
 
   // --- LOGIC FOR DYNAMIC CARD HEIGHT ---
   const [cardMaxHeight, setCardMaxHeight] = useState(0);
@@ -155,6 +155,7 @@ const Inventory2 = () => {
           const imageId = galleryIds[0];
           if (mediaCache[imageId]) return mediaCache[imageId];
           const response = await fetch(`${MEDIA_ENDPOINT}${imageId}`);
+          console.log(`${MEDIA_ENDPOINT}${imageId}`)
           if (response.ok) {
             const mediaData = await response.json();
             const imageUrl = mediaData.media_details?.sizes?.medium?.source_url || mediaData.media_details?.sizes?.large?.source_url || mediaData.source_url;
@@ -177,6 +178,10 @@ const Inventory2 = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+   useEffect(() => {
+    window.scrollTo({ top: 500, left: 0, behavior: "smooth" });
+  }, [currentPage]);
+
       
   useEffect(() => {
     const fetchFiltersAndYachts = async () => {
@@ -278,7 +283,7 @@ const Inventory2 = () => {
   // --- ADDED EFFECT TO RESET HEIGHT ON PAGE CHANGE ---
   useEffect(() => {
     setCardMaxHeight(0); // Reset height when the displayed yachts change
-    window.scrollTo(0, 0); // Also scroll to top on page change
+    // window.scrollTo(0, 0); // Also scroll to top on page change
   }, [currentPage, yachtsToDisplayOnPage]);
   // --- END ADDED EFFECT ---
 

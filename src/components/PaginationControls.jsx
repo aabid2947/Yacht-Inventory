@@ -18,11 +18,11 @@ function PaginationControls({
     if (!isNaN(value) && value >= 1 && value <= totalPages) {
       onPageChange(value);
     } else if (e.target.value === "") {
-        // Allow clearing the input, but don't change page yet
-        // Or, you could set it to 1 or current page if it's cleared and blurred
+      // Allow clearing the input, but don't change page yet
+      // Or, you could set it to 1 or current page if it's cleared and blurred
     }
   };
-  
+
   // Function to handle blur or enter key on input for more robust page change
   const handlePageInputCommit = (e) => {
     const value = parseInt(e.target.value);
@@ -42,7 +42,7 @@ function PaginationControls({
 
   return (
     <nav
-      className="flex flex-col sm:flex-row justify-between items-center mt-8 py-2.5 w-full gap-4 sm:gap-2 border-t"
+      className="flex flex-col sm:flex-row justify-between items-center mt-8 py-2.5 w-full gap-4 sm:gap-2 "
       aria-label="Pagination navigation"
     >
       <div className="flex gap-3 items-center w-full sm:w-auto justify-center sm:justify-start">
@@ -51,21 +51,34 @@ function PaginationControls({
             onClick={handleFirstPage}
             aria-label="Go to first page"
             disabled={currentPage === 1}
-            className="flex items-center px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+            className="flex items-center px-3 py-1.5  rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
           >
-            <ArrowLeftToLine size={16} className="mr-1" /> First
+            <ArrowLeftToLine size={16} className="mr-1" /> Go to Page 1
           </button>
         )}
+        
+      </div>
+
+
+      <div className="flex gap-3 items-center w-full sm:w-auto justify-center sm:justify-end">
         <button
           onClick={handlePrevPage}
           aria-label="Previous page"
           disabled={currentPage === 1}
           className="flex items-center px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
         >
-          <ArrowLeft size={16} className="mr-1" /> Previous
+          <ArrowLeft size={16} className="mr-1" /> 
         </button>
+        <button
+          onClick={handleNextPage}
+          aria-label="Next page"
+          disabled={currentPage === totalPages}
+          className="flex items-center px-3 py-1.5 bg-[#f4c630] rounded-md text-sm  disabled:opacity-50"
+        >
+          Next Page <ArrowRight size={16} className="ml-1" />
+        </button>
+        
       </div>
-
       <div className="flex gap-2.5 items-center w-full sm:w-auto justify-center">
         <label className="text-sm sm:text-base text-[#000000A6] text-opacity-70">
           Page
@@ -85,27 +98,7 @@ function PaginationControls({
           of {totalPages}
         </span>
       </div>
-      
-      <div className="flex gap-3 items-center w-full sm:w-auto justify-center sm:justify-end">
-        <button
-          onClick={handleNextPage}
-          aria-label="Next page"
-          disabled={currentPage === totalPages}
-          className="flex items-center px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
-        >
-          Next <ArrowRight size={16} className="ml-1" />
-        </button>
-        {currentPage !== totalPages && (
-          <button
-            onClick={handleLastPage}
-            aria-label="Go to last page"
-            disabled={currentPage === totalPages}
-            className="flex items-center px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
-          >
-            Last <ArrowRight size={16} className="ml-1" /> {/* Consider a specific "Last Page" icon */}
-          </button>
-        )}
-      </div>
+
     </nav>
   );
 }

@@ -9,11 +9,11 @@ export const useYacht = () => useContext(YachtContext);
 // Create the Provider component
 export const YachtProvider = ({ children }) => {
   const [yachtData, setYachtData] = useState(null);
-  const [yachtImageURL,setYachtImageURL] = useState(null)
+  const [yachtImageURL,setYachtImageURL] = useState([])
 
   // This function will be called from the card click handler
   const selectYacht = (data,imageURL) => {
-    setYachtImageURL(imageURL)
+     setYachtImageURL(prevURLs => [...prevURLs, imageURL]);
     setYachtData(data);
   };
 

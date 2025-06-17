@@ -52,6 +52,8 @@ export default function Comparison() {
     const handleRemoveItem = (item) => {
         toggleItem(item);
         if(selectedItems.length <= 2){
+            clearSelection();
+
             navigate('/')
         }
 
