@@ -155,7 +155,7 @@ const Inventory2 = () => {
           const imageId = galleryIds[0];
           if (mediaCache[imageId]) return mediaCache[imageId];
           const response = await fetch(`${MEDIA_ENDPOINT}${imageId}`);
-          console.log(`${MEDIA_ENDPOINT}${imageId}`)
+
           if (response.ok) {
             const mediaData = await response.json();
             const imageUrl = mediaData.media_details?.sizes?.medium?.source_url || mediaData.media_details?.sizes?.large?.source_url || mediaData.source_url;

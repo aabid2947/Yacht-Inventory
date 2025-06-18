@@ -1,27 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Import useEffect
 import { useLocation } from "react-router-dom";
 import hamburger from "./../assets/hamburger.svg";
 import carImages from "./../assets/carImages.png";
 import { useYacht } from "../context/YachtContext";
+import { Carousel } from "react-responsive-carousel"; // Import Carousel
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 
 function Header() {
   const { yachtImageURL } = useYacht();
   const location = useLocation();
 
   const isBoatPage = location.pathname.startsWith("/boat");
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === yachtImageURL.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? yachtImageURL.length - 1 : prev - 1
-    );
-  };
 
   return (
     <section className="flex flex-col gap-4 md:gap-6">
@@ -57,33 +46,29 @@ function Header() {
       {isBoatPage ? (
         <div className="w-full h-[400px] flex items-center justify-center bg-black rounded-2xl relative overflow-hidden">
           {yachtImageURL.length > 0 ? (
-            <img
-              src={yachtImageURL[currentIndex]}
-              alt={`Yacht ${currentIndex + 1}`}
-              className="w-full max-h-[400px] object-cover transition-all duration-500 rounded-2xl"
-            />
+            <Carousel
+              showArrows={yachtImageURL.length > 1} // Show arrows only if more than 1 image
+              autoPlay={yachtImageURL.length > 1} // Auto-play if more than 1 image
+              interval={2000} // Auto-slide every 2 seconds
+              infiniteLoop={true} // Loop back to the first slide after the last
+              showThumbs={false} // Hide thumbnail navigation
+              showStatus={false} // Hide status text (e.g., "1 of 5")
+              className="w-full h-full" // Ensure carousel takes full width and height
+            >
+              {yachtImageURL.map((imageUrl, index) => (
+                <div key={index} className="h-[400px]">
+                  <img
+                    src={imageUrl}
+                    alt={`Yacht ${index + 1}`}
+                    className="w-full max-h-[400px] object-cover rounded-2xl"
+                  />
+                </div>
+              ))}
+            </Carousel>
           ) : (
             <div className="w-full h-[400px] bg-gray-200 flex items-center justify-center rounded-2xl text-gray-600">
               No yacht images
             </div>
-          )}
-
-          {/* Navigation Arrows */}
-          {yachtImageURL.length > 1 && (
-            <>
-              <button
-                onClick={prevSlide}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-black px-3 py-1 rounded-full shadow"
-              >
-                ‹
-              </button>
-              <button
-                onClick={nextSlide}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 text-black px-3 py-1 rounded-full shadow"
-              >
-                ›
-              </button>
-            </>
           )}
         </div>
       ) : (
