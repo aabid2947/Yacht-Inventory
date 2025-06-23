@@ -187,15 +187,15 @@ const Inventory2 = () => {
     const fetchFiltersAndYachts = async () => {
       try {
         setLoading(true);
+  
         const [filtersResponse, yachtsResponse] = await Promise.all([
           fetch(FILTERS_ENDPOINT),
           fetch(YACHT_ENDPOINT)
         ]);
-
         if (!filtersResponse.ok) throw new Error('Failed to fetch WordPress filters');
         const filtersData = await filtersResponse.json();
         setWordpressFilters(filtersData.filters || {});
-
+         
         if (!yachtsResponse.ok) throw new Error('Failed to fetch yacht data');
         const yachtsData = await yachtsResponse.json();
         setYachts(yachtsData);
@@ -229,6 +229,7 @@ const Inventory2 = () => {
         const imagePromises = yachts.map(yacht => getYachtImageUrl(yacht).then(url => ({ id: yacht.id, url })));
         const results = await Promise.all(imagePromises);
         setYachtImages(results.reduce((acc, { id, url }) => ({ ...acc, [id]: url }), {}));
+     
       };
       fetchAllImages();
     }
@@ -300,7 +301,7 @@ const Inventory2 = () => {
     <div className="min-h-screen bg-[#f0f0f0]">
       <main className="flex justify-center mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{maxWidth: '1700px'}}>
         <div className="flex flex-col lg:flex-row gap-8 w-full">
-          <div className={`w-full lg:w-[350px] flex-shrink-0 ${isFiltersOpen ? 'block' : 'hidden lg:block'} self-start`}>
+          <div className={`w-full lg:w-[300px] flex-shrink-0 ${isFiltersOpen ? 'block' : 'hidden lg:block'} self-start`}>
             {(!loading || yachts.length > 0 || Object.keys(wordpressFilters).length > 0) ? (
               <FilterUI
                 filters={filters}

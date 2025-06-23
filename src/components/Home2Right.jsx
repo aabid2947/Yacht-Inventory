@@ -76,13 +76,30 @@ function Home2Right({
 
       {!loading && yachtsToDisplay.length > 0 && (
         <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'} gap-3 mb-6`}>
-          {yachtsToDisplay.map((yacht) => (
-            <RecommendedCard
-              key={yacht.id}
-              yacht={yacht}
-              imageUrl={yachtImages[yacht.id]} // Pass the specific image URL for this yacht
-            />
-          ))}
+          {yachtsToDisplay.map((yacht) => {
+            // Parse _yacht_gallery_ids string to array
+            let galleryIds = [];
+            try {
+              galleryIds = JSON.parse(yacht.meta._yacht_gallery_ids || "[]");
+
+            } catch (e) {
+              console.error("Invalid JSON in _yacht_gallery_ids:", yacht.meta._yacht_gallery_ids);
+            }
+
+            // Safely fetch image URLs
+            const imageUrls = galleryIds.flatMap(id => yachtImages[id] || []);
+            // console.log(`Yacht ID: ${yacht.id}`, imageUrls);
+            if(imageUrls.length ==0 ) imageUrls.push(yachtImages[yacht.id])
+
+            return (
+              <RecommendedCard
+                key={yacht.id}
+                yacht={yacht}
+                imageUrls={imageUrls}
+              />
+            );
+          })}
+
         </div>
       )}
 
@@ -115,7 +132,7 @@ function Home2Right({
                 d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068M15.75 21H8.25A2.25 2.25 0 016 18.75V5.25A2.25 2.25 0 018.25 3h7.5A2.25 2.25 0 0118 5.25v8.25A2.25 2.25 0 0115.75 21v-2.25a2.25 2.25 0 00-1.5-2.122M15.75 21V15.75M3 12c0-1.268.63-2.39 1.593-3.068M3 12a9 9 0 0118 0M3 12a9 9 0 0018 0"
               />
             </svg>
-            Compare 
+            Compare
           </Button>
         </div>
 

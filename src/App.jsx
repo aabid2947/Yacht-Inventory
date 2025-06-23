@@ -58,7 +58,7 @@ function App() {
           <div style={{ maxWidth: "1920px", margin: "0 auto" }}>
             
             <AnimatedRoutes />
-            <Footer />
+            {/* <Footer /> */}
             <CompareButton />
           </div>
         </Router>

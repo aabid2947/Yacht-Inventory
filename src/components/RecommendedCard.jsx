@@ -8,11 +8,11 @@ import { useYacht } from '../context/YachtContext'; // Adjust path if needed
  * @param {function} onLayout - Callback to report the card's height to the parent.
  * @param {number} maxHeight - The uniform height to be applied to the card.
  */
-function RecommendedCard({ yacht, imageUrl, onLayout, maxHeight }) {
+function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
   const cardRef = useRef(null);
   const { selectedItems, toggleItem } = useComparison();
   const navigate = useNavigate();
-  const { selectYacht } = useYacht();
+  const { selectYacht, removeYachtImages } = useYacht();
 
   // This effect measures the card's height after it renders and reports it.
   useLayoutEffect(() => {
@@ -28,7 +28,7 @@ function RecommendedCard({ yacht, imageUrl, onLayout, maxHeight }) {
   }
 
   const defaultImage = 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=800';
-  const displayImage = imageUrl || defaultImage;
+  const displayImage = imageUrls[0] || defaultImage;
 
   const itemForComparison = {
     ...yacht,
@@ -41,7 +41,8 @@ function RecommendedCard({ yacht, imageUrl, onLayout, maxHeight }) {
     if (e.target.closest('.compare-button')) {
       return;
     }
-    selectYacht(yacht,imageUrl);
+    removeYachtImages()
+    selectYacht(yacht, imageUrls);
     navigate(`/boat/${yacht.slug || yacht.id}`, { state: { yachtData: yacht } });
   };
 
@@ -79,52 +80,52 @@ function RecommendedCard({ yacht, imageUrl, onLayout, maxHeight }) {
 
         {/* This container will now correctly push the price section to the bottom */}
         <div className="flex flex-col flex-grow w-full">
-            <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
-                {/* line-clamp-3 allows for more text before truncating, helping with dynamic height */}
-                <h2 className="text-md sm:text-xl md:text-[22px] tracking-wide font-medium text-black line-clamp-3 break-words leading-snug" title={yacht.title?.rendered}>
-                    {yacht.title?.rendered || "N/A"}
-                </h2>
-                <p className="mt-1 text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
-                <p className="mt-2 text-xs text-gray-400">ID: {yacht.id || "N/A"}</p>
-            </section>
+          <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
+            {/* line-clamp-3 allows for more text before truncating, helping with dynamic height */}
+            <h2 className="text-md sm:text-xl md:text-[22px] tracking-wide font-medium text-black line-clamp-3 break-words leading-snug" title={yacht.title?.rendered}>
+              {yacht.title?.rendered || "N/A"}
+            </h2>
+            <p className="mt-1 text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
+            <p className="mt-2 text-xs text-gray-400">ID: {yacht.id || "N/A"}</p>
+          </section>
 
-            {/* This empty div will grow and act as a spacer */}
-            <div className="flex-grow" />
+          {/* This empty div will grow and act as a spacer */}
+          <div className="flex-grow" />
 
-            <div className="mt-4 sm:mt-7 w-full h-px bg-[#00000026]" />
+          <div className="mt-4 sm:mt-7 w-full h-px bg-[#00000026]" />
 
-            <section className="w-full mt-3 sm:mt-5">
-                <div className="flex justify-between items-start w-full">
-                <div>
-                    {yacht.meta?._yacht_discounted_price && parseFloat(yacht.meta._yacht_discounted_price) < parseFloat(yacht.meta._yacht_price) ? (
-                    <>
-                        <p className="text-sm text-gray-500 line-through">
-                        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_price) || 0)}
-                        </p>
-                        <p className="font-medium text-xl sm:text-2xl text-black">
-                        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_discounted_price) || 0)}
-                        </p>
-                    </>
-                    ) : (
-                    <p className="font-bold text-xl sm:text-2xl">
-                        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta?._yacht_price) || 0)}
+          <section className="w-full mt-3 sm:mt-5">
+            <div className="flex justify-between items-start w-full">
+              <div>
+                {yacht.meta?._yacht_discounted_price && parseFloat(yacht.meta._yacht_discounted_price) < parseFloat(yacht.meta._yacht_price) ? (
+                  <>
+                    <p className="text-sm text-gray-500 line-through">
+                      {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_price) || 0)}
                     </p>
-                    )}
-                </div>
-                <button
-                    onClick={handleCompareToggle}
-                    className="flex items-center gap-1 mt-3 sm:gap-2 focus:outline-none compare-button"
-                    aria-label="Compare this product"
-                >
-                    <span className="text-md sm:text-base font-normal tracking-wider font-thin whitespace-nowrap">
-                    Compare
-                    </span>
-                    <span className={`border rounded border-[#0000004D] h-4 w-4 sm:h-[22px] sm:w-[22px] flex-shrink-0 flex items-center justify-center text-white ${isSelected ? 'bg-black' : ''}`}>
-                    {isSelected && '✔'}
-                    </span>
-                </button>
-                </div>
-            </section>
+                    <p className="font-medium text-xl sm:text-2xl text-black">
+                      {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_discounted_price) || 0)}
+                    </p>
+                  </>
+                ) : (
+                  <p className="font-bold text-xl sm:text-2xl">
+                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta?._yacht_price) || 0)}
+                  </p>
+                )}
+              </div>
+              <button
+                onClick={handleCompareToggle}
+                className="flex items-center gap-1 mt-3 sm:gap-2 focus:outline-none compare-button"
+                aria-label="Compare this product"
+              >
+                <span className="text-md sm:text-base font-normal tracking-wider font-thin whitespace-nowrap">
+                  Compare
+                </span>
+                <span className={`border rounded border-[#0000004D] h-4 w-4 sm:h-[22px] sm:w-[22px] flex-shrink-0 flex items-center justify-center text-white ${isSelected ? 'bg-black' : ''}`}>
+                  {isSelected && '✔'}
+                </span>
+              </button>
+            </div>
+          </section>
         </div>
       </div>
     </article>

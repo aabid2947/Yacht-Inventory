@@ -46,7 +46,7 @@ function PaginationControls({
       aria-label="Pagination navigation"
     >
       <div className="flex gap-3 items-center w-full sm:w-auto justify-center sm:justify-start">
-        {currentPage !== 1 && (
+       
           <button
             onClick={handleFirstPage}
             aria-label="Go to first page"
@@ -55,7 +55,7 @@ function PaginationControls({
           >
             <ArrowLeftToLine size={16} className="mr-1" /> Go to Page 1
           </button>
-        )}
+      
         
       </div>
 

@@ -24,13 +24,14 @@ function Home() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    console.log(yachtData)
+
   }, [yachtData]); // PROBLEM 2: Dependencies are problematic
 
   useEffect(() => {
   if (location.state?.yachtData) {
     setBoatData(location.state.yachtData);
     setLoading(false);
+    console.log(location.state.yachtData)
   } else if (yachtData) {
     setBoatData(yachtData);
     setLoading(false);

@@ -1,28 +1,46 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Create the context
 const YachtContext = createContext(null);
 
-// Create a custom hook for easy access to the context
+// Custom hook
 export const useYacht = () => useContext(YachtContext);
 
-// Create the Provider component
-export const YachtProvider = ({ children }) => {
-  const [yachtData, setYachtData] = useState(null);
-  const [yachtImageURL,setYachtImageURL] = useState([])
+// Default images
+const staticBoatImages = [
+  "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?q=80&w=800",
+  "https://digigrammers.com/boat/wp-content/uploads/2025/04/elton-sa-4sDp1rPl1Vs-unsplash-225x300.jpg"
+];
 
-  // This function will be called from the card click handler
-  const selectYacht = (data,imageURL) => {
-     setYachtImageURL(prevURLs => [...prevURLs, imageURL]);
+// Provider
+export const YachtProvider = ({ children }) => {
+  // Read from sessionStorage on first load
+  const storedImageURLs = sessionStorage.getItem("yachtImageURL");
+  const initialImageURLs = storedImageURLs ? JSON.parse(storedImageURLs) : staticBoatImages;
+
+  const [yachtData, setYachtData] = useState(null);
+  const [yachtImageURL, setYachtImageURL] = useState(initialImageURLs);
+
+  // Update sessionStorage whenever yachtImageURL changes
+  useEffect(() => {
+    sessionStorage.setItem("yachtImageURL", JSON.stringify(yachtImageURL));
+  }, [yachtImageURL]);
+
+  const selectYacht = (data, imageURL) => {
+    setYachtImageURL(prev => [...prev, ...imageURL]);
     setYachtData(data);
   };
+  const removeYachtImages = () => {
+    setYachtImageURL(staticBoatImages);
+    sessionStorage.setItem("yachtImageURL", JSON.stringify(staticBoatImages));
+  };
 
-  // The value that will be supplied to all consuming components
   const value = {
     yachtData,
     selectYacht,
-    setYachtData, // Exposing the raw setter for direct fetching in the Home component
-    yachtImageURL
+    setYachtData,
+    yachtImageURL,
+    removeYachtImages
   };
 
   return (
