@@ -27,7 +27,7 @@ export const YachtProvider = ({ children }) => {
   }, [yachtImageURL]);
 
   const selectYacht = (data, imageURL) => {
-    setYachtImageURL(prev => [...prev, ...imageURL]);
+   setYachtImageURL(prev => [...imageURL, ...prev]);
     setYachtData(data);
   };
   const removeYachtImages = () => {
