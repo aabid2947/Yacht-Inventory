@@ -51,7 +51,7 @@ export default function Header() {
     <section className="flex flex-col gap-4 md:gap-6">
       {isBoatPage ? (
         <div className="relative w-full h-[568px] bg-white rounded-2xl overflow-hidden p-4 ">
-          {yachtImageURL.length > 0 ? (
+          {yachtImageURL.length > 1? (
             <Slider {...settings} className="h-full rounded-2xl">
               {yachtImageURL.map((url, idx) => (
                 <div key={idx} className="h-[568px] px-2">
@@ -64,9 +64,11 @@ export default function Header() {
               ))}
             </Slider>
           ) : (
-            <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-2xl text-gray-600">
-              No yacht images
-            </div>
+            <img
+          src={yachtImageURL[0]}
+          className="w-full h-auto object-cover rounded-2xl"
+          alt="Car"
+        />
           )}
         </div>
       ) : (
