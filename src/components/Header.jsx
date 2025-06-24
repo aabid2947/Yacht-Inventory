@@ -1,72 +1,68 @@
-"use client"
 
 import { useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import carImages from "./../assets/carImages.png"
 import { useYacht } from "../context/YachtContext.jsx"
-import { Carousel } from "react-responsive-carousel"
-import "react-responsive-carousel/lib/styles/carousel.min.css"
+import Slider from "react-slick"
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
-function Header() {
-    const location = useLocation();
-  
+function PrevArrow({ onClick }) {
+  return (
+    <button
+      className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-[40px] h-[40px] bg-white rounded-[6px] shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+      onClick={onClick}
+    >
+      <ChevronLeft />
+    </button>
+  )
+}
+
+function NextArrow({ onClick }) {
+  return (
+    <button
+      className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-[40px] h-[40px] bg-white rounded-[6px] shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+      onClick={onClick}
+    >
+      <ChevronRight />
+    </button>
+  )
+}
+
+export default function Header() {
+  const location = useLocation()
   const { yachtImageURL } = useYacht()
   const isBoatPage = location.pathname.startsWith("/boat")
-  const [boatImages,setBoatImages] = useState([])
-  
 
-  useEffect(() => {
-    console.log(yachtImageURL)
-  }, [])
-
+  const settings = {
+    centerMode: true,
+    centerPadding: "25%",
+    slidesToShow: 1,
+    infinite: yachtImageURL.length > 1,
+    autoplay: yachtImageURL.length > 1,
+    autoplaySpeed: 2000,
+    arrows: yachtImageURL.length > 1,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+  }
 
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       {isBoatPage ? (
-        <div className="relative w-full h-[568px] bg-black rounded-2xl overflow-hidden">
+        <div className="relative w-full h-[568px] bg-white rounded-2xl overflow-hidden p-4 ">
           {yachtImageURL.length > 0 ? (
-            <Carousel
-              showArrows={yachtImageURL.length > 1}
-              autoPlay={yachtImageURL.length > 1}
-              interval={2000}
-              infiniteLoop
-              showThumbs={false}
-              showStatus={false}
-              className="w-full h-full"
-              renderArrowPrev={(onClick, hasPrev, label) =>
-                hasPrev && (
-                  <button
-                    onClick={onClick}
-                    title={label}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-[40px] h-[40px] bg-white rounded-[6px] shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="font-bolder">←</span>
-                  </button>
-                )
-              }
-              renderArrowNext={(onClick, hasNext, label) =>
-                hasNext && (
-                  <button
-                    onClick={onClick}
-                    title={label}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-[40px] h-[40px] bg-white rounded-[6px] shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
-                  >
-                     <span className="font-bolder">→</span>
-                  </button>
-                )
-              }
-            >
+            <Slider {...settings} className="h-full rounded-2xl">
               {yachtImageURL.map((url, idx) => (
-                <div key={idx} className="h-[568px]">
+                <div key={idx} className="h-[568px] px-2">
                   <img
                     src={url || "/placeholder.svg"}
                     alt={`Yacht ${idx + 1}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-2xl"
                   />
                 </div>
               ))}
-            </Carousel>
+            </Slider>
           ) : (
             <div className="flex items-center justify-center w-full h-full bg-gray-200 rounded-2xl text-gray-600">
               No yacht images
@@ -74,10 +70,12 @@ function Header() {
           )}
         </div>
       ) : (
-        <img src={carImages || "/placeholder.svg"} className="w-full h-auto object-cover rounded-2xl" alt="Car" />
+        <img
+          src={carImages || "/placeholder.svg"}
+          className="w-full h-auto object-cover rounded-2xl"
+          alt="Car"
+        />
       )}
     </section>
   )
 }
-
-export default Header
