@@ -30,46 +30,35 @@ function NextArrow({ onClick }) {
   )
 }
 
-
 export default function Header() {
   const location = useLocation()
   const { yachtImageURL } = useYacht()
   const isBoatPage = location.pathname.startsWith("/boat")
 
-   const settings = {
-  centerMode: true,
-  centerPadding: "25%", // default for desktop
-  slidesToShow: 1,
-  infinite: yachtImageURL.length > 1,
-  autoplay: yachtImageURL.length > 1,
-  autoplaySpeed: 2000,
-  arrows: yachtImageURL.length > 1,
-  prevArrow: <PrevArrow />,
-  nextArrow: <NextArrow />,
-  responsive: [
-    {
-      breakpoint: 768, // For screens <768px (mobile)
-      settings: {
-        centerMode: false,     // disable centering
-        centerPadding: "0px",  // no side padding
-        slidesToShow: 1,
-      },
-    },
-  ],
-}
+  const settings = {
+    centerMode: true,
+    centerPadding: "25%",
+    slidesToShow: 1,
+    infinite: yachtImageURL.length > 1,
+    autoplay: yachtImageURL.length > 1,
+    autoplaySpeed: 2000,
+    arrows: yachtImageURL.length > 1,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />,
+  }
 
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       {isBoatPage ? (
         <div className="relative w-full h-[568px] bg-white rounded-2xl overflow-hidden p-4 ">
           {yachtImageURL.length > 1? (
-            <Slider {...settings} className="h-full rounded-2xl">
+            <Slider {...settings} className="h-full roundex-2xl focus:outline-none">
               {yachtImageURL.map((url, idx) => (
-                <div key={idx} className="h-[568px] px-2 roundex-2xl focus:outline-none">
+                <div key={idx} className="h-[568px] px-2 roundex-2xl focus:outline-none ">
                   <img
                     src={url || "/placeholder.svg"}
                     alt={`Yacht ${idx + 1}`}
-                    className="w-full h-full object-cover rounded-2xl"
+                    className="w-full h-auto object-cover rounded-2xl focus:outline-none "
                   />
                 </div>
               ))}
