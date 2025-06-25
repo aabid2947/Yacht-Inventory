@@ -30,22 +30,33 @@ function NextArrow({ onClick }) {
   )
 }
 
+
 export default function Header() {
   const location = useLocation()
   const { yachtImageURL } = useYacht()
   const isBoatPage = location.pathname.startsWith("/boat")
 
-  const settings = {
-    centerMode: true,
-    centerPadding: "25%",
-    slidesToShow: 1,
-    infinite: yachtImageURL.length > 1,
-    autoplay: yachtImageURL.length > 1,
-    autoplaySpeed: 2000,
-    arrows: yachtImageURL.length > 1,
-    prevArrow: <PrevArrow />,
-    nextArrow: <NextArrow />,
-  }
+   const settings = {
+  centerMode: true,
+  centerPadding: "25%", // default for desktop
+  slidesToShow: 1,
+  infinite: yachtImageURL.length > 1,
+  autoplay: yachtImageURL.length > 1,
+  autoplaySpeed: 2000,
+  arrows: yachtImageURL.length > 1,
+  prevArrow: <PrevArrow />,
+  nextArrow: <NextArrow />,
+  responsive: [
+    {
+      breakpoint: 768, // For screens <768px (mobile)
+      settings: {
+        centerMode: false,     // disable centering
+        centerPadding: "0px",  // no side padding
+        slidesToShow: 1,
+      },
+    },
+  ],
+}
 
   return (
     <section className="flex flex-col gap-4 md:gap-6">
