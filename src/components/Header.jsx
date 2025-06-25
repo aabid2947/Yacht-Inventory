@@ -58,7 +58,7 @@ export default function Header() {
                   <img
                     src={url || "/placeholder.svg"}
                     alt={`Yacht ${idx + 1}`}
-                    className="w-full h-auto object-cover rounded-2xl focus:outline-none "
+                    className="w-full h-[95%] object-cover rounded-2xl focus:outline-none "
                   />
                 </div>
               ))}
