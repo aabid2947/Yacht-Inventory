@@ -65,7 +65,7 @@ export default function Header() {
           {yachtImageURL.length > 1? (
             <Slider {...settings} className="h-full rounded-2xl">
               {yachtImageURL.map((url, idx) => (
-                <div key={idx} className="h-[568px] px-2">
+                <div key={idx} className="h-[568px] px-2 roundex-2xl focus:outline-none">
                   <img
                     src={url || "/placeholder.svg"}
                     alt={`Yacht ${idx + 1}`}
