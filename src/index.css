@@ -4,6 +4,6 @@ body {
 }
 
 .slick-list {
-  border-radius: 1rem;     /* tailwind’s rounded-2xl = 1rem */
+  border-radius: 1.2rem;     /* tailwind’s rounded-2xl = 1rem */
 
 }
