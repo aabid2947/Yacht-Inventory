@@ -59,15 +59,16 @@ export default function Header() {
   return (
     <section className="flex flex-col gap-4 md:gap-6">
       {isBoatPage ? (
-        <div className="relative w-full h-[568px] bg-white rounded-2xl overflow-hidden md:p-4 ">
+        <div className="relative w-full h-[568px] bg-white rounded-2xl  md:p-4 ">
           {yachtImageURL.length > 1? (
             <Slider {...settings} className="h-full rounded-2xl">
               {yachtImageURL.map((url, idx) => (
-                <div key={idx} className="h-[568px] px-2 roundex-2xl">
+                <div key={idx} className="h-[568px] rounded-2xl px-2 ">
                   <img
                     src={url || "/placeholder.svg"}
                     alt={`Yacht ${idx + 1}`}
-                    className="w-full h-[95%] object-cover rounded-2xl focus:outline-none "
+                    className="w-full h-[100%]  object-cover rounded-2xl focus:outline-none focus:ring-0"
+
                   />
                 </div>
               ))}
