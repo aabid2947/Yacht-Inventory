@@ -2,3 +2,8 @@
 body {
   font-family: "NeueMontreal", sans-serif;
 }
+
+.slick-list {
+  border-radius: 1rem;     /* tailwind’s rounded-2xl = 1rem */
+
+}
