@@ -275,7 +275,7 @@ const FilterUI = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 self-start">
+    <div className="bg-white rounded-lg p-6 self-start">
       <div className="flex items-center gap-3 mb-4">
         <SlidersHorizontal size={20} />
         <span className="text-lg font-semibold">Filters</span>

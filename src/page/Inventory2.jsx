@@ -299,9 +299,9 @@ const Inventory2 = () => {
 
   return (
     <div className="min-h-screen bg-[#f0f0f0]">
-      <main className="flex justify-center mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{maxWidth: '1700px'}}>
+      <main className="flex justify-center mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-30" style={{maxWidth: '1700px'}}>
         <div className="flex flex-col lg:flex-row gap-8 w-full">
-          <div className={`w-full lg:w-[300px] flex-shrink-0 ${isFiltersOpen ? 'block' : 'hidden lg:block'} self-start`}>
+          <div className={`w-full lg:w-[470px] flex-shrink-0 ${isFiltersOpen ? 'block' : 'hidden lg:block'} self-start`}>
             {(!loading || yachts.length > 0 || Object.keys(wordpressFilters).length > 0) ? (
               <FilterUI
                 filters={filters}
@@ -317,7 +317,7 @@ const Inventory2 = () => {
                 onPanelToggle={() => setIsFiltersOpen(false)}
               />
             ) : (
-              <div className="w-full lg:w-[300px] flex-shrink-0 bg-white rounded-lg shadow p-4 self-start">
+              <div className="w-full lg:w-[470px] flex-shrink-0 bg-white rounded-lg shadow p-4 self-start">
                 <div className="animate-pulse">
                   <div className="h-8 bg-gray-300 rounded w-1/3 mb-4"></div>
                   <div className="h-6 bg-gray-300 rounded w-1/4 mb-6"></div>

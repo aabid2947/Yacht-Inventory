@@ -57,7 +57,7 @@ export default function Header() {
 }
 
   return (
-    <section className="flex flex-col gap-4 md:gap-6">
+    <section className="flex flex-col gap-4 md:gap-6 bg-[#f0f0f0]">
       {isBoatPage ? (
         <div className="relative w-full h-[568px] bg-white rounded-2xl  md:p-4 ">
           {yachtImageURL.length > 1? (

@@ -82,15 +82,18 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
         <div className="flex flex-col flex-grow w-full">
           <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
             {/* line-clamp-3 allows for more text before truncating, helping with dynamic height */}
-            <h2 className="text-md sm:text-xl md:text-[22px] tracking-wide font-medium text-black line-clamp-3 break-words leading-snug" title={yacht.title?.rendered}>
-              {yacht.title?.rendered || "N/A"}
-            </h2>
+            <div className="w-full max-w-[100%]"> {/* or fixed width like w-[250px] */}
+              <h2
+                className="text-md sm:text-xl md:text-[22px] truncate whitespace-nowrap overflow-hidden text-black"
+                title={yacht.title?.rendered}
+              >
+                {yacht.title?.rendered || "N/A"}
+              </h2>
+            </div>
             <p className="mt-1 text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
             <p className="mt-2 text-xs text-gray-400">ID: {yacht.id || "N/A"}</p>
           </section>
 
-          {/* This empty div will grow and act as a spacer */}
-          <div className="flex-grow" />
 
           <div className="mt-4 sm:mt-7 w-full h-px bg-[#00000026]" />
 
@@ -117,7 +120,7 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
                 className="flex items-center gap-1 mt-3 sm:gap-2 focus:outline-none compare-button"
                 aria-label="Compare this product"
               >
-                <span className="text-md sm:text-base font-normal tracking-wider font-thin whitespace-nowrap">
+                <span className="text-md sm:text-base font-normal text-[rgba(0,0,0,1)] tracking-wider font-thin whitespace-nowrap">
                   Compare
                 </span>
                 <span className={`border rounded border-[#0000004D] h-4 w-4 sm:h-[22px] sm:w-[22px] flex-shrink-0 flex items-center justify-center text-white ${isSelected ? 'bg-black' : ''}`}>
