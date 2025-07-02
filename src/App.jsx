@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-import Header from "./components/Header";
+import Header2 from "./components/Header2";
 import Footer from "./components/Footer";
 import Home from "./page/Home";
 import Screen1 from "./page/Screen1";
@@ -36,7 +36,7 @@ const AnimatedRoutes = () => {
         unmountOnExit
       >
         <div ref={nodeRef} className="page-wrapper">
-          <Header />
+          <Header2 />
           <Routes location={location}>
             <Route path="/boat/:slug" element={<Home />} />
             <Route path="/screen1" element={<Screen1 />} />

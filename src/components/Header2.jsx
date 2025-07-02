@@ -3,7 +3,7 @@ import hamburger from "./../assets/hamburger.svg";
 
 function Header2() {
   return (
-    <main className="w-full">
+    <main className="w-full p-[25px] bg-[rgba(242,242,242,1)]">
       <header className="overflow-hidden relative w-full h-[300px] sm:h-[500px] md:h-[600px] lg:h-[744px]">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/b8653fe468617273c6e209ca65ab59fb559fdbe6"
@@ -42,7 +42,7 @@ function Header2() {
             </div>
           </nav>
         </div>
-        <h2 className="absolute text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-semibold tracking-tighter text-white bottom-[20px] sm:bottom-[30px] md:bottom-[40px] lg:bottom-[50px] left-[20px] sm:left-[40px] md:left-[60px] lg:left-[84px]">
+        <h2 className="absolute bottom-[38px] left-[86px] tracking-[3px] text-[98px] font-semibold text-white">
           Inventory
         </h2>
       </header>

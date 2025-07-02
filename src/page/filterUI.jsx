@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react"
 import { Input } from "../components/ui/input" // Assuming this path is correct
 import { RangeSlider } from "../components/ui/range-slider" // Assuming this path is correct
 import { Check, SlidersHorizontal, X, Plus, Minus } from "lucide-react"
+import FilterIcon from "../assets/filter.png"
 
 const FilterUI = ({
   filters: filtersFromParent,
@@ -218,9 +219,9 @@ const FilterUI = ({
 
     return (
       <div key={filterKey} className="mb-4">
-        <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2">
+        <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-2">
           {label} {unit && unit !== "$" ? `(${unit})` : ''}
-          <span className={`text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
+          <span className={`w-[40px] h-[40px] flex items-center justify-center text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
              {isOpen ? <Minus size={16} /> : <Plus size={16} />}
           </span>
         </h3>
@@ -275,32 +276,36 @@ const FilterUI = ({
   };
 
   return (
-    <div className="bg-white rounded-lg p-6 self-start">
-      <div className="flex items-center gap-3 mb-4">
-        <SlidersHorizontal size={20} />
-        <span className="text-lg font-semibold">Filters</span>
+    <div className="bg-white rounded-[20px] p-[48px] self-start">
+      <div className="flex items-center gap-[28px] mb-[20px]">
+        <img src={FilterIcon} alt="" />
+        <span className="text-lg font-semibold text-[25px] tracking-[2px]">Filters</span>
         <button onClick={onPanelToggle} className="ml-auto lg:hidden text-gray-500 hover:text-gray-700">
           <X size={20} />
         </button>
       </div>
 
-      <div className="flex gap-4 mb-6 text-sm">
-        <button onClick={clearAllFiltersFromParent} className="text-gray-600 hover:text-blue-800 underline">
-          Clear All
+      <div className="flex gap-6 mb-10 text-sm">
+        <button onClick={clearAllFiltersFromParent} className="text-[#808080] text-[18px] hover:text-blue-800 underline">
+          Clear
+        </button>
+
+        <button className="text-[#808080] text-[18px] hover:text-blue-800 underline">
+          View last search
         </button>
       </div>
 
       {activeFilterTags.length > 0 && (
-        <div className="mb-6">
+        <div className="mb-17">
           <div className="flex flex-wrap gap-2">
             {activeFilterTags.map((tag) => (
               <div
                 key={tag.id}
-                className="flex items-center bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm"
+                className="flex items-center bg-[rgba(227,232,242,1)] text-[#808080] rounded-md px-[17px] py-[6px] text-[18px]"
               >
                 <span>{tag.label}</span>
-                <button onClick={tag.onRemove} className="ml-2 text-blue-600 hover:text-blue-800">
-                  <X size={14} />
+                <button onClick={tag.onRemove} className="ml-2 text-[#000000] hover:text-[#000000]">
+                  <X size={18} />
                 </button>
               </div>
             ))}
@@ -308,18 +313,18 @@ const FilterUI = ({
         </div>
       )}
 
-      <div className="mb-6">
-        <h3
+      <div className="mb-12">
+        {/* <h3
           onClick={() => toggleSection("conditions")}
           className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base   pb-2"
-        >
-          Condition
+        > */}
+          {/* Condition */}
            {/* <span className={`text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${openFilterSections["conditions"] ? 'rotate-0' : '-rotate-180'}`}>
             {openFilterSections["conditions"] ? <Minus size={16} /> : <Plus size={16} />}
           </span> */}
-        </h3>
+        {/* </h3> */}
         <div className={`transition-all duration-300 ease-in-out overflow-hidden 'max-h-96 opacity-100' `}>
-            <div className=" pt-2 flex items-center justify-between">
+            <div className="flex gap-[34px]">
               {conditionOptions.map((condition) => {
                 const isChecked = filtersFromParent.selectedConditions.includes(condition);
                 return (
@@ -329,12 +334,12 @@ const FilterUI = ({
                       role="checkbox"
                       aria-checked={isChecked}
                       onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
-                      className={`w-4 h-4 rounded-sm border flex items-center justify-center mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${isChecked ? "bg-black border-black" : "bg-white border-gray-400"}`}
+                      className={`w-[24px] h-[24px] rounded-sm border flex items-center mr-[15px] justify-center mr-2 focus:ring-0 focus:outline-none ${isChecked ? "border-black" : "bg-white border-gray-400"}`}
                     >
-                      {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
+                      {isChecked && <Check size={20} className="text-black" strokeWidth={3} />}
                     </button>
                     <label
-                      className="text-sm text-center font-medium cursor-pointer"
+                      className="text-[18px] text-center font-medium cursor-pointer"
                       onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
                     >
                       {condition}

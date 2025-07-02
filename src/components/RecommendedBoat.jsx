@@ -106,12 +106,12 @@ const BoatCard = ({ boat, imageUrl, onLayout, maxHeight, isSelected, onCardClick
           />
         </figure>
 
-        <div className="flex flex-col flex-grow w-full">
+        <div className="flex flex-col flex-grow w-full px-[15px]">
           <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
             <h2 className="text-md sm:text-xl md:text-[22px] tracking-wide font-medium text-black line-clamp-3 break-words leading-snug" title={boat.title}>
               {boat.title}
             </h2>
-            <p className="mt-1 text-sm sm:text-base text-[#00000080]">{boat.condition}</p>
+            <p className="text-sm sm:text-base text-[#00000080]">{boat.condition}</p>
             <p className="mt-2 text-xs text-gray-400">ID: {boat.sku}</p>
           </section>
 

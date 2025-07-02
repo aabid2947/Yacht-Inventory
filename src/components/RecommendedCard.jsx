@@ -79,7 +79,7 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
         </figure>
 
         {/* This container will now correctly push the price section to the bottom */}
-        <div className="flex flex-col flex-grow w-full">
+        <div className="flex flex-col flex-grow w-full px-[15px] pb-[17px]">
           <section className="flex flex-col items-start w-full overflow-hidden mt-3 sm:mt-[19px]">
             {/* line-clamp-3 allows for more text before truncating, helping with dynamic height */}
             <div className="w-full max-w-[100%]"> {/* or fixed width like w-[250px] */}
@@ -90,7 +90,7 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
                 {yacht.title?.rendered || "N/A"}
               </h2>
             </div>
-            <p className="mt-1 text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
+            <p className="text-sm sm:text-base text-[#00000080]">{yacht.meta?._yacht_boat_condition || "N/A"}</p>
             <p className="mt-2 text-xs text-gray-400">ID: {yacht.id || "N/A"}</p>
           </section>
 
@@ -98,14 +98,14 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
           <div className="mt-4 sm:mt-7 w-full h-px bg-[#00000026]" />
 
           <section className="w-full mt-3 sm:mt-5">
-            <div className="flex justify-between items-start w-full">
+            <div className="flex justify-between items-end w-full">
               <div>
                 {yacht.meta?._yacht_discounted_price && parseFloat(yacht.meta._yacht_discounted_price) < parseFloat(yacht.meta._yacht_price) ? (
                   <>
                     <p className="text-sm text-gray-500 line-through">
                       {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_price) || 0)}
                     </p>
-                    <p className="font-medium text-xl sm:text-2xl text-black">
+                    <p className="font-medium leading-[24px] text-xl sm:text-2xl text-black">
                       {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_discounted_price) || 0)}
                     </p>
                   </>
@@ -117,7 +117,7 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
               </div>
               <button
                 onClick={handleCompareToggle}
-                className="flex items-center gap-1 mt-3 sm:gap-2 focus:outline-none compare-button"
+                className="flex items-center gap-1 mt-3 sm:gap-[12px] focus:outline-none compare-button"
                 aria-label="Compare this product"
               >
                 <span className="text-md sm:text-base font-normal text-[rgba(0,0,0,1)] tracking-wider font-thin whitespace-nowrap">
