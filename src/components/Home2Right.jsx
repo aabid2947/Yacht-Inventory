@@ -2,6 +2,8 @@ import React from "react";
 import SearchBar from "./SearchBar";
 import TopListSettings from "./TopListSettings";
 import RecommendedCard from "./RecommendedCard";
+import RecommendedCardListView from "./RecommendedCardListView";
+
 import PaginationControls from "./PaginationControls";
 import { Button } from '@/components/ui/button';
 import { useComparison } from "../context/ComparisonContext"; // Added
@@ -76,23 +78,25 @@ function Home2Right({
 
       {!loading && yachtsToDisplay.length > 0 && (
         <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'} gap-[25px] mb-6`}>
-          {yachtsToDisplay.map((yacht) => {
-            // Parse _yacht_gallery_ids string to array
+         {yachtsToDisplay.map((yacht) => {
             let galleryIds = [];
             try {
               galleryIds = JSON.parse(yacht.meta._yacht_gallery_ids || "[]");
-
             } catch (e) {
               console.error("Invalid JSON in _yacht_gallery_ids:", yacht.meta._yacht_gallery_ids);
             }
 
-            // Safely fetch image URLs
             const imageUrls = galleryIds.flatMap(id => yachtImages[id] || []);
-            // console.log(`Yacht ID: ${yacht.id}`, imageUrls);
-            if(imageUrls.length ==0 ) imageUrls.push(yachtImages[yacht.id])
+            if (imageUrls.length === 0) imageUrls.push(yachtImages[yacht.id]);
 
-            return (
+            return viewMode === "grid" ? (
               <RecommendedCard
+                key={yacht.id}
+                yacht={yacht}
+                imageUrls={imageUrls}
+              />
+            ) : (
+              <RecommendedCardListView
                 key={yacht.id}
                 yacht={yacht}
                 imageUrls={imageUrls}

@@ -135,10 +135,10 @@ const FilterUI = ({
       <div className="mb-4">
         <h3
           onClick={() => toggleSection(sectionKey)}
-          className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base border-b border-gray-200 pb-2"
+          className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-7"
         >
           {title}
-          <span className={`text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
+          <span className={`w-[40px] h-[40px] flex items-center justify-center  text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
             {isOpen ? <Minus size={16} /> : <Plus size={16} />}
           </span>
         </h3>
@@ -219,7 +219,7 @@ const FilterUI = ({
 
     return (
       <div key={filterKey} className="mb-4">
-        <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-2">
+        <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-7">
           {label} {unit && unit !== "$" ? `(${unit})` : ''}
           <span className={`w-[40px] h-[40px] flex items-center justify-center text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
              {isOpen ? <Minus size={16} /> : <Plus size={16} />}
@@ -362,16 +362,15 @@ const FilterUI = ({
         <div className="mb-6">
            <h3
              onClick={() => toggleSection("advancedOptions")}
-             className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base"
+             className="font-bold mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-7"
            >
             Advanced options
-            <span className={`text-white rounded-full w-6 h-6 flex items-center justify-center transition-transform duration-300 ${openFilterSections["advancedOptions"] ? "bg-blue-600 rotate-0" : "bg-gray-400 -rotate-180"}`}>
+            <span className={`text-white rounded-full w-[40px] h-[40px] flex items-center justify-center transition-transform duration-300 ${openFilterSections["advancedOptions"] ? "bg-[rgba(39,73,137,1)] rotate-0" : "bg-gray-400 -rotate-180"}`}>
                {openFilterSections["advancedOptions"] ? <Minus size={14} /> : <Plus size={14} />}
              </span>
            </h3>
            <div className={`transition-all duration-300 ease-in-out overflow-hidden ${openFilterSections["advancedOptions"] ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-             <div className="space-y-4 pt-2">
-               <div className="border-t border-gray-200 my-2"></div>
+             <div className="space-y-4 pt-4">
                {Object.entries(wordpressFiltersFromParent).map(([filterKey, filterData]) => {
                  if (staticOptionsForDynamicFilters[filterKey] || rangeFilterDefinitionsFromParent.some(def => def.wpKey === filterKey || def.filterKey === filterKey)) {
                    return null;
@@ -384,13 +383,13 @@ const FilterUI = ({
                  if (options.length === 0) return null;
 
                  return (
-                   <div key={filterKey} className="pb-2 border-b border-gray-200 last:border-b-0">
+                   <div key={filterKey} className="pb-4 border-b border-gray-200 last:border-b-0">
                      <h4
                        onClick={() => toggleSection(filterKey)}
-                       className="font-semibold mb-2 flex items-center justify-between cursor-pointer text-base"
+                       className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-[24px] pt-2 pb-2"
                      >
                        {filterTitle}
-                       <span className={`text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
+                       <span className={`w-[40px] h-[40px] flex items-center justify-center text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
                          {isOpen ? <Minus size={14} /> : <Plus size={14} />}
                        </span>
                      </h4>
