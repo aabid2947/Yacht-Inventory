@@ -334,7 +334,7 @@ const FilterUI = ({
                       role="checkbox"
                       aria-checked={isChecked}
                       onClick={() => handleFilterChangeFromParent("selectedConditions", condition, !isChecked)}
-                      className={`w-[24px] h-[24px] rounded-sm border flex items-center mr-[15px] justify-center mr-2 focus:ring-0 focus:outline-none ${isChecked ? "border-black" : "bg-white border-gray-400"}`}
+                      className={`w-[22px] h-[22px] rounded-sm border flex items-center mr-[15px] justify-center mr-2 focus:ring-0 focus:outline-none ${isChecked ? "border-black" : "bg-white border-gray-400"}`}
                     >
                       {isChecked && <Check size={20} className="text-black" strokeWidth={3} />}
                     </button>

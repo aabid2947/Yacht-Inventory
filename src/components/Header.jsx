@@ -59,7 +59,7 @@ export default function Header() {
   return (
     <section className="flex flex-col gap-4 md:gap-6 bg-[#f0f0f0]">
       {isBoatPage ? (
-        <div className="relative w-full h-[568px] bg-white rounded-2xl  md:p-4 ">
+        <div className="relative w-full h-[585px] bg-white rounded-2xl  md:p-4 md:pb-0">
           {yachtImageURL.length > 1? (
             <Slider {...settings} className="h-full rounded-2xl">
               {yachtImageURL.map((url, idx) => (

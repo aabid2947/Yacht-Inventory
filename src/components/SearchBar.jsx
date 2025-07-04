@@ -4,8 +4,8 @@ import SearchIcon from "../assets/search.png"
 
 function SearchBar({ searchTerm, onSearchChange, onFiltersToggle, resultsText }) {
   return (
-<section className="text-base md:text-lg leading-snug text-black rounded-none">
-  <div className="flex flex-col md:flex-row gap-4 mb-[40px] w-full">
+<section className="text-base md:text-lg leading-snug text-black mb-[42px] rounded-none">
+  <div className="flex flex-col md:flex-row gap-4 w-full">
     <div className="relative flex-grow w-full">
       {/* Search icon */}
       <img className="absolute left-[24px] top-[18px]" src={SearchIcon} alt="" />
@@ -14,13 +14,13 @@ function SearchBar({ searchTerm, onSearchChange, onFiltersToggle, resultsText })
       <input
         type="text"
         placeholder="Search boats by keywords"
-        className="pl-18 pr-56 h-16 text-md bg-white w-full rounded-lg focus:ring-blue-500 focus:border-red-500"
+        className="pl-18 pr-56 h-16 text-[18px] bg-white w-full rounded-lg focus:ring-blue-500 focus:border-red-500"
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
       />
 
       {/* Result text aligned to right inside input */}
-      <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-gray-500 whitespace-nowrap">
+      <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[18px] text-gray-500 whitespace-nowrap">
         {resultsText}
       </span>
     </div>

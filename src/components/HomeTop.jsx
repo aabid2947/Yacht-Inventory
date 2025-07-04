@@ -86,16 +86,16 @@ function HomeTop({ yacht }) {
   };
 
   return (
-    <section className="my-8 md:my-12 lg:my-16 border-b border-[#0000004D] flex flex-col sm:flex-row justify-between gap-6 md:gap-0 pb-6 md:pb-9">
+    <div className="mt-[64px] mb-[66px] border-b border-[#0000004D] flex flex-col sm:flex-row justify-between gap-6 md:gap-0 pb-6 md:pb-[47px]">
       {/* Left section: Boat Condition, Name, and ID */}
       <div className="flex flex-col gap-2 md:gap-3.5">
         {/* Only render the button if boatCondition is not "Condition Unknown" or empty */}
         {boatCondition && boatCondition !== "Condition Unknown" && (
-          <button className="w-auto max-w-[100px] cursor-pointer inline-flex items-center justify-center rounded-lg bg-[#274989] px-3 md:px-5 py-1 md:py-2 text-sm md:text-[16px] font-normal text-white">
+          <button className="w-fit cursor-pointer inline-flex items-center justify-center rounded-lg bg-[#274989] px-[18px] py-[8px] text-sm md:text-[16px] font-normal text-white">
             {boatCondition}
           </button>
         )}
-        <span className="font-medium text-3xl md:text-4xl lg:text-5xl leading-[140%]">
+        <span className="font-medium text-[50px] md:text-4xl lg:text-5xl leading-[140%]">
           {yachtName}
         </span>
         <span className="text-base md:text-lg leading-[100%] font-normal text-[#000000A6]">
@@ -138,7 +138,7 @@ function HomeTop({ yacht }) {
           Link copied to clipboard!
         </div>
       )}
-    </section>
+    </div>
   );
 }
 

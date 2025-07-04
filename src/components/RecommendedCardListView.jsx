@@ -5,9 +5,9 @@ import LengthOverall from "../assets/length-overall.png";
 
 const RecommendedCardListView = ({ yacht, imageUrls }) => {
   return (
-    <div className="flex bg-white rounded-xl shadow border border-gray-200 overflow-hidden p-6">
+    <div className="flex bg-white rounded-xl shadow border border-gray-200 overflow-hidden p-[10px]">
       {/* 1️⃣ Image Column */}
-      <div className="w-[384px] h-[245px] shrink-0 rounded-lg overflow-hidden">
+      <div className="w-[384px] h-[279px] shrink-0 rounded-lg overflow-hidden">
         <img
           src={imageUrls[0]}
           alt={yacht?.title?.rendered || "Yacht"}
@@ -16,8 +16,8 @@ const RecommendedCardListView = ({ yacht, imageUrls }) => {
       </div>
 
       {/* 2️⃣ Info Column */}
-      <div className="flex flex-col pl-[32px] px-6">
-        <h2 className="text-[24px] font-semibold text-black">
+      <div className="flex justify-center flex-col pl-[43px] px-6">
+        <h2 className="text-[26px] font-semibold text-black">
           {yacht?.title?.rendered || "2024 Aquila 32 Sport"}
         </h2>
         <p className="text-sm text-gray-500 mt-1 mb-2">New</p>
@@ -25,28 +25,28 @@ const RecommendedCardListView = ({ yacht, imageUrls }) => {
         <div className="grid grid-cols-3 gap-[35px] text-sm text-gray-700 mt-4">
           <div>
             <img src={FuelType} alt="" />
-            <p className="text-gray-500 text-[20px] mt-[8px]">Fuel type</p>
-            <p className="font-medium">{yacht?.meta?.fuel_type || "Gas"}</p>
+            <p className="text-black text-[18px] mt-[8px]">Fuel type</p>
+            <p className="font-medium text-[16px] text-gray-400">{yacht?.meta?.fuel_type || "Gas"}</p>
           </div>
           <div>
            <img src={Beam} alt="" className="w-[32px]" />
-            <p className="text-gray-500 text-[20px] mt-[8px]">Beam</p>
-            <p className="font-medium">{yacht?.meta?.beam || "10.33 ft"}</p>
+            <p className="text-black text-[18px] mt-[8px]">Beam</p>
+            <p className="font-medium text-[16px] text-gray-400">{yacht?.meta?.beam || "10.33 ft"}</p>
           </div>
           <div>
            <img src={LengthOverall} alt="" />
-            <p className="text-gray-500 text-[20px mt-[8px]">Length overall</p>
-            <p className="font-medium">{yacht?.meta?.length || "34 ft"}</p>
+            <p className="text-black text-[18px] mt-[8px]">Length overall</p>
+            <p className="font-medium text-[16px] text-gray-400">{yacht?.meta?.length || "34 ft"}</p>
           </div>
         </div>
-        <div className="flex  gap-2 mt-[25px]">
-            <span className="px-[12px] py-[10px] rounded-md text-[16px] border border-gray-300 text-gray-800 w-fit">
+        <div className="flex gap-[7px] mt-[25px]">
+            <span className="px-[14px] py-[9px] rounded-md text-[16px] border border-gray-300 text-gray-500 w-fit">
             Mercury
             </span>
-            <span className="px-[12px] py-[10px] rounded-md text-[16px] border border-gray-300 text-gray-800 w-fit">
+            <span className="px-[14px] py-[9px] rounded-md text-[16px] border border-gray-300 text-gray-500 w-fit">
             290 gal
             </span>
-            <span className="px-[12px] py-[10px] rounded-md text-[16px] border border-gray-300 text-gray-800 w-fit">
+            <span className="px-[14px] py-[9px] rounded-md text-[16px] border border-gray-300 text-gray-500 w-fit">
             42.0’
             </span>
         </div>
@@ -54,15 +54,15 @@ const RecommendedCardListView = ({ yacht, imageUrls }) => {
     
 
       {/* 4️⃣ Pricing Column */}
-      <div className="flex flex-col items-end justify-between ml-auto h-full">
+      <div className="flex flex-col pt-[15px] pb-[15px] pr-[15px] items-end justify-between ml-auto w-[220px] border-l border-[#ccc] h-full">
         <span className="bg-yellow-400 text-black text-xs px-3 py-1 rounded font-medium mb-2">
           Hot deals!
         </span>
         <div className="text-right">
           <p className="text-sm text-gray-400 line-through">${yacht?.meta?.original_price || "607,000"}</p>
-          <p className="text-2xl font-bold text-black">${yacht?.meta?.price || "449,000"}</p>
+          <p className="text-[24px] font-medium text-black">${yacht?.meta?.price || "449,000"}</p>
         </div>
-        <button className="mt-4 bg-blue-900 hover:bg-blue-800 text-white px-[30px] py-[12px] rounded-md text-sm font-medium">
+        <button className="mt-4 bg-blue-900 hover:bg-blue-800 text-white px-[22px] py-[13px] rounded-[7px] text-[18px] font-medium">
           View details →
         </button>
       </div>

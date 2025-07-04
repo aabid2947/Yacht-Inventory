@@ -42,7 +42,7 @@ function PaginationControls({
 
   return (
     <nav
-      className="flex flex-col sm:flex-row justify-between items-center mt-[80px] py-2.5 w-full gap-4 sm:gap-2 "
+      className="flex flex-col sm:flex-row justify-between items-center mt-[80px] w-full gap-4 sm:gap-2 "
       aria-label="Pagination navigation"
     >
       <div className="flex gap-3 items-center w-full sm:w-auto justify-center sm:justify-start">
@@ -51,7 +51,7 @@ function PaginationControls({
             onClick={handleFirstPage}
             aria-label="Go to first page"
             disabled={currentPage === 1}
-            className="text-[16px] flex items-center px-3 py-1.5  rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+            className="text-[16px] flex items-center text-black px-3 py-1.5  rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
           >
             <ArrowLeftToLine size={16} className="mr-1" /> Go to Page 1
           </button>
@@ -65,17 +65,17 @@ function PaginationControls({
           onClick={handlePrevPage}
           aria-label="Previous page"
           disabled={currentPage === 1}
-          className="flex items-center h-[40px] px-3 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+          className="flex items-center h-[40px] w-[40px] px-2 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
         >
-          <ArrowLeft size={16} className="mr-1" /> 
+          <ArrowLeft size={16} className="mr-1 stroke-black" /> 
         </button>
         <button
           onClick={handleNextPage}
           aria-label="Next page"
           disabled={currentPage === totalPages}
-          className="flex items-center h-[40px] px-[26px] py-[10px] bg-[#f4c630] rounded-md text-sm  disabled:opacity-50"
+          className="flex items-center h-[40px] px-[22px] py-[10px] bg-[#f4c630] rounded-md text-[16px]  disabled:opacity-50"
         >
-          Next Page <ArrowRight size={16} className="ml-1" />
+          Next Page <ArrowRight size={16} className="ml-[10px] stroke-black" />
         </button>
         
       </div>
