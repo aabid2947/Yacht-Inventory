@@ -132,18 +132,18 @@ const FilterUI = ({
     const isOpen = !!openFilterSections[sectionKey];
 
     return (
-      <div className="mb-4">
+      <div className="">
         <h3
           onClick={() => toggleSection(sectionKey)}
-          className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-7"
+          className="font-semibold shadow-0 tracking-wider mb-0 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pt-[28px] pb-[25px]"
         >
           {title}
           <span className={`w-[40px] h-[40px] flex items-center justify-center  text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
             {isOpen ? <Minus size={16} /> : <Plus size={16} />}
           </span>
         </h3>
-        <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="space-y-3 pt-2">
+        <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'py-[50px] max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 p-0'}`}>
+          <div className="space-y-3 pt-0">
             {options.map((option) => {
               const optionValue = isWpFilter ? option.value : option;
               const optionLabel = isWpFilter ? option.label : option;
@@ -166,7 +166,7 @@ const FilterUI = ({
                     {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
                   </button>
                   <label
-                    className="text-sm cursor-pointer"
+                    className="text-[18px] cursor-pointer"
                     onClick={() =>
                       handleFilterChangeFromParent("selectedDynamicFilters", {
                         key: filterKey,
@@ -218,24 +218,24 @@ const FilterUI = ({
     };
 
     return (
-      <div key={filterKey} className="mb-4">
-        <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-7">
+      <div key={filterKey} className="">
+        <h3 onClick={() => toggleSection(filterKey)} className="font-semibold shadow-0 tracking-wider mb-0 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pt-[28px] pb-[25px]">
           {label} {unit && unit !== "$" ? `(${unit})` : ''}
           <span className={`w-[40px] h-[40px] flex items-center justify-center text-gray-500 p-1 text-center border-1 border-gray-300 rounded-[50%] transition-transform duration-300 ${isOpen ? 'rotate-0' : '-rotate-180'}`}>
              {isOpen ? <Minus size={16} /> : <Plus size={16} />}
           </span>
         </h3>
-        <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="space-y-4 pt-2">
-            <div className="flex justify-between items-center gap-3">
+        <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'pt-[45px] pb-[50px] max-h-[1000px] opacity-100' : 'p-0 max-h-0 opacity-0'}`}>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center gap-3 px-1">
               <div className="flex-1">
-                <label htmlFor={`min-${filterKey}`} className="text-xs text-gray-600 block mb-1">Min:</label>
+                <label htmlFor={`min-${filterKey}`} className="text-[18px] text-gray-600 block mb-[9px]">Min:</label>
                 <Input
                   id={`min-${filterKey}`}
                   type={unit === "$" ? "text" : "number"}
                   value={formatValueForInput(currentRange[0], true)}
                   placeholder={unit === "$" ? `$${Number(actualMin).toLocaleString()}` : `${actualMin}${unit && unit !== "$" ? unit : ""}`}
-                  className="h-10 text-sm w-full border-gray-300"
+                  className="focus-visible:ring-offset-0 h-[44px] text-sm w-full border-gray-300"
                   onChange={(e) => {
                     const value = parseValueFromInput(e.target.value);
                     handleFilterChangeFromParent(filterKey, [isNaN(value) || value < actualMin ? actualMin : value, currentRange[1]]);
@@ -244,13 +244,13 @@ const FilterUI = ({
                 />
               </div>
               <div className="flex-1">
-                <label htmlFor={`max-${filterKey}`} className="text-xs text-gray-600 block mb-1">Max:</label>
+                <label htmlFor={`max-${filterKey}`} className="text-[18px] text-gray-600 block mb-[9px]">Max:</label>
                 <Input
                   id={`max-${filterKey}`}
                   type={unit === "$" ? "text" : "number"}
                   value={formatValueForInput(currentRange[1], false)}
                   placeholder={unit === "$" ? `$${Number(actualMax).toLocaleString()}` : `${actualMax}${unit && unit !== "$" ? unit : ""}`}
-                  className="h-10 text-sm w-full border-gray-300"
+                  className="focus-visible:ring-offset-0 h-[44px] text-sm w-full border-gray-300"
                   onChange={(e) => {
                     const value = parseValueFromInput(e.target.value);
                     handleFilterChangeFromParent(filterKey, [currentRange[0], isNaN(value) || value > actualMax ? actualMax : value]);
@@ -279,7 +279,7 @@ const FilterUI = ({
     <div className="bg-white rounded-[20px] p-[48px] self-start">
       <div className="flex items-center gap-[28px] mb-[20px]">
         <img src={FilterIcon} alt="" />
-        <span className="text-lg font-semibold text-[25px] tracking-[2px]">Filters</span>
+        <span className="text-lg font-semibold text-[28px] tracking-[2px]">Filters</span>
         <button onClick={onPanelToggle} className="ml-auto lg:hidden text-gray-500 hover:text-gray-700">
           <X size={20} />
         </button>
@@ -313,7 +313,7 @@ const FilterUI = ({
         </div>
       )}
 
-      <div className="mb-12">
+      <div className="mb-[18px]">
         {/* <h3
           onClick={() => toggleSection("conditions")}
           className="font-semibold mb-3 flex items-center justify-between cursor-pointer text-base   pb-2"
@@ -359,10 +359,10 @@ const FilterUI = ({
       })}
 
       {Object.keys(wordpressFiltersFromParent).length > 0 && (
-        <div className="mb-6">
+        <div className="">
            <h3
              onClick={() => toggleSection("advancedOptions")}
-             className="font-bold mb-3 flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pb-7"
+             className="font-bold flex items-center justify-between cursor-pointer text-[24px] border-b border-gray-200 pt-[28px] pb-[25px]"
            >
             Advanced options
             <span className={`text-white rounded-full w-[40px] h-[40px] flex items-center justify-center transition-transform duration-300 ${openFilterSections["advancedOptions"] ? "bg-[rgba(39,73,137,1)] rotate-0" : "bg-gray-400 -rotate-180"}`}>
@@ -393,7 +393,7 @@ const FilterUI = ({
                          {isOpen ? <Minus size={14} /> : <Plus size={14} />}
                        </span>
                      </h4>
-                     <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                     <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 p-0'}`}>
                        <div className="space-y-2 pt-2">
                          {options.map((option) => {
                            const optionValue = typeof option === 'object' && option !== null && option.value !== undefined ? option.value : option;
@@ -417,7 +417,7 @@ const FilterUI = ({
                                  {isChecked && <Check size={12} className="text-white" strokeWidth={3} />}
                                </button>
                                <label
-                                 className="text-sm cursor-pointer"
+                                 className="text-[18px] cursor-pointer"
                                  onClick={() =>
                                    handleFilterChangeFromParent("selectedDynamicFilters", {
                                      key: filterKey,

@@ -299,9 +299,9 @@ const Inventory2 = () => {
 
   return (
     <div className="min-h-screen bg-[#f0f0f0]">
-      <main className="flex justify-center mx-auto py-8 pt-30" style={{maxWidth: '1700px'}}>
-        <div className="flex flex-col lg:flex-row gap-[56px] w-full">
-          <div className={`w-full lg:w-[470px] flex-shrink-0 ${isFiltersOpen ? 'block' : 'hidden lg:block'} self-start`}>
+      <main className="flex justify-center mx-auto py-8 pt-[57px] lg:pt-[150px] px-[15px]" style={{maxWidth: '1730px'}}>
+        <div className="flex flex-col lg:flex-row gap-[56px] w-full relative">
+          <div className={`w-full md:w-[471px] lg:w-[471px] xl:w-[471px] flex-shrink-0 ${isFiltersOpen ? ' block absolute z-[99] mt-[181px]' : 'hidden lg:block'} self-start`}>
             {(!loading || yachts.length > 0 || Object.keys(wordpressFilters).length > 0) ? (
               <FilterUI
                 filters={filters}
@@ -317,7 +317,7 @@ const Inventory2 = () => {
                 onPanelToggle={() => setIsFiltersOpen(false)}
               />
             ) : (
-              <div className="w-full lg:w-[470px] flex-shrink-0 bg-white rounded-[20px] shadow p-4 self-start">
+              <div className="w-full lg:w-[471px] xl:w-[471px] flex-shrink-0 bg-white rounded-[20px] shadow p-4 self-start">
                 <div className="animate-pulse">
                   <div className="h-8 bg-gray-300 rounded w-1/3 mb-4"></div>
                   <div className="h-6 bg-gray-300 rounded w-1/4 mb-6"></div>

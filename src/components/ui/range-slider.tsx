@@ -25,7 +25,7 @@ const RangeSlider = React.forwardRef<
       {Array.from({ length: thumbCount }).map((_, i) => (
         <SliderPrimitive.Thumb
           key={i}
-          className="block h-4 w-4 rounded-full border-2 border-black bg-blue-800 ring-offset-background transition-colors focus-visible:outline-none    disabled:pointer-events-none disabled:opacity-50"
+          className="block h-[17px] w-[17px] rounded-full bg-[rgba(39,73,137,1)] ring-offset-background transition-colors focus-visible:outline-none    disabled:pointer-events-none disabled:opacity-50"
         />
       ))}
     </SliderPrimitive.Root>

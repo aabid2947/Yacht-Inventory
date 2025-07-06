@@ -52,7 +52,6 @@ function Home2Right({
       <SearchBar
         searchTerm={searchTerm}
         onSearchChange={onSearchChange}
-        onFiltersToggle={onFiltersToggle}
         resultsText={resultsText}
       />
       <TopListSettings
@@ -61,6 +60,8 @@ function Home2Right({
         onSortChange={onSortChange}
         viewMode={viewMode}
         onViewModeChange={onViewModeChange}
+        onFiltersToggle={onFiltersToggle}
+
       />
 
       {!loading && yachtsToDisplay.length === 0 && (
@@ -77,7 +78,7 @@ function Home2Right({
       )}
 
       {!loading && yachtsToDisplay.length > 0 && (
-        <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'} gap-[25px] mb-6`}>
+        <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'} gap-[25px] mb-6`}>
          {yachtsToDisplay.map((yacht) => {
             let galleryIds = [];
             try {

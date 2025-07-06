@@ -95,17 +95,17 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
           </section>
 
 
-          <div className="mt-[4px] sm:mt-7 w-full h-px bg-[#00000026]" />
+          <div className="mt-[27px] w-full h-px bg-[#00000026]" />
 
-          <section className="w-full mt-[18px]">
+          <section className="w-full mt-[19px]">
+             <p className="text-[16px] text-black/50 line-through">
+                      {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_price) || 0)}
+                    </p>
             <div className="flex justify-between items-end w-full">
               <div>
                 {yacht.meta?._yacht_discounted_price && parseFloat(yacht.meta._yacht_discounted_price) < parseFloat(yacht.meta._yacht_price) ? (
                   <>
-                    <p className="text-[16px] text-black/50 line-through">
-                      {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_price) || 0)}
-                    </p>
-                    <p className="font-medium leading-[24px] text-xl sm:text-2xl text-black">
+                    <p className="font-medium leading-[24px] text-xl sm:text-2xl text-black leading-[1.5]">
                       {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(parseInt(yacht.meta._yacht_discounted_price) || 0)}
                     </p>
                   </>
@@ -117,7 +117,7 @@ function RecommendedCard({ yacht, imageUrls, onLayout, maxHeight }) {
               </div>
               <button
                 onClick={handleCompareToggle}
-                className="flex items-center gap-1 mt-3 sm:gap-[12px] focus:outline-none compare-button"
+                className="flex items-center gap-1 sm:gap-[12px] focus:outline-none compare-button"
                 aria-label="Compare this product"
               >
                 <span className="text-[16px] font-normal text-[rgba(0,0,0,1)] tracking-wider font-thin whitespace-nowrap">

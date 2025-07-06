@@ -103,7 +103,7 @@ function HomeTop({ yacht }) {
         </span>
       </div>
 
-      {/* Right section: Share and Print buttons */}
+      {/* Right section: Share and Print buttons */} cvxfbbv
       <div className="flex gap-4 md:gap-7 items-center md:items-end">
         {/* Share Button */}
         <button
