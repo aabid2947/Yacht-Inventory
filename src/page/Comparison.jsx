@@ -137,79 +137,85 @@ export default function Comparison() {
 
                 <div className="space-y-6">
                     {/* Description Section */}
-                    <section className="border border-gray-300 rounded-xl pt-[39px] pl-[61px] md:p-10 bg-white">
+                    <section className="border border-gray-300 rounded-xl pt-[39px] pl-[61px] pb-[40px] md:p-10 bg-white">
                         <h2 className="text-[26px] font-semibold mb-[17px] text-black">Description</h2>
-                        <div className="grid grid-cols-[1fr] md:grid-cols-4 gap-x-4 gap-y-2">
-                            <div className="col-span-1 pb-2 md:pb-0">
-                                {['Make', 'Model', 'Year', 'Price', 'Type', 'Class', 'Hull Material', 'Identifier (Stock No.)'].map(label => (
-                                    <div key={label} className="text-[18px] font-bold text-black py-1.5 border-b md:border-b-0 md:pr-2">{label}</div>
+                        <div className="overflow-x-auto">
+                            <div className="inline-grid 2xl:w-[100%] xl:w-[100%] flg:w-[100%] w-[1300px]" style={{ gridTemplateColumns: `280px repeat(${itemsToDisplay.length}, minmax(200px, 1fr))` }}>
+                                <div className="font-semibold text-[18px] text-black bg-white sticky left-0 z-10">
+                                    {['Make', 'Model', 'Year', 'Price', 'Type', 'Class', 'Hull Material', 'Identifier (Stock No.)'].map(label => (
+                                        <div key={label} className="text-[18px] font-bold text-black py-1.5">{label}</div>
+                                    ))}
+                                </div>
+                                {itemsToDisplay.map((boat) => (
+                                    <div key={`desc-${boat.id}`} className="col-span-1 border-l border-gray-300 md:pl-6 text-gray-500">
+                                        <div className="py-1.5 text-[18px] px-10 truncate text-[rgba(0,0,0,0.65)]" title={getMetaField(boat, '_yacht_make')}>{getMetaField(boat, '_yacht_make')}</div>
+                                        <div className="py-1.5 text-[18px] px-10 truncate text-[rgba(0,0,0,0.65)]" title={getMetaField(boat, '_yacht_model')}>{getMetaField(boat, '_yacht_model')}</div>
+                                        <div className="py-1.5 text-[18px] px-10 text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_year')}</div>
+                                        <div className="py-1.5 text-[18px] px-10 font-semibold text-[rgba(0,0,0,0.65)]">{formatPrice(getMetaField(boat, '_yacht_price', null))}</div>
+                                        <div className="py-1.5 text-[18px] px-10 text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_boat_type')}</div> {/* Corrected field */}
+                                        <div className="py-1.5 text-[18px] px-10 text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_class')}</div> {/* Likely "N/A" if missing */}
+                                        <div className="py-1.5 text-[18px] px-10 text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_hull_material')}</div>
+                                        <div className="py-1.5 text-[18px] px-10 text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_identifier')}</div> {/* Changed to _yacht_identifier */}
+                                    </div>
+                                ))}
+                                {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
+                                    <div key={`desc-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 md:border-l md:pl-4">
+                                        {Array(8).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
+                                    </div>
                                 ))}
                             </div>
-                            {itemsToDisplay.map((boat) => (
-                                <div key={`desc-${boat.id}`} className="col-span-1 md:border-l border-gray-300 md:pl-6 text-sm text-gray-500">
-                                    <div className="py-1.5 border-b text-[18px] md:border-none truncate text-[rgba(0,0,0,0.65)]" title={getMetaField(boat, '_yacht_make')}>{getMetaField(boat, '_yacht_make')}</div>
-                                    <div className="py-1.5 border-b text-[18px] md:border-none truncate text-[rgba(0,0,0,0.65)]" title={getMetaField(boat, '_yacht_model')}>{getMetaField(boat, '_yacht_model')}</div>
-                                    <div className="py-1.5 border-b text-[18px] md:border-none text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_year')}</div>
-                                    <div className="py-1.5 border-b text-[18px] md:border-none font-semibold text-[rgba(0,0,0,0.65)]">{formatPrice(getMetaField(boat, '_yacht_price', null))}</div>
-                                    <div className="py-1.5 border-b text-[18px] md:border-none text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_boat_type')}</div> {/* Corrected field */}
-                                    <div className="py-1.5 border-b text-[18px] md:border-none text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_class')}</div> {/* Likely "N/A" if missing */}
-                                    <div className="py-1.5 border-b text-[18px] md:border-none text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_hull_material')}</div>
-                                    <div className="py-1.5">{getMetaField(boat, '_yacht_identifier')}</div> {/* Changed to _yacht_identifier */}
-                                </div>
-                            ))}
-                            {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
-                                <div key={`desc-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 md:border-l md:pl-4">
-                                    {Array(8).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
-                                </div>
-                            ))}
                         </div>
                     </section>
 
                     {/* Engines Section */}
                     <section className="border border-gray-300 rounded-xl p-10 md:p-10 bg-white">
                         <h2 className="text-[26px] font-semibold mb-[17px] text-black">Engines</h2>
-                        <div className="grid grid-cols-[1fr] md:grid-cols-4 gap-x-4 gap-y-2">
-                            <div className="col-span-1 pb-2 md:pb-0">
-                                {['Engine Make', 'Engine Model', 'Engine HP', 'Fuel Type'].map(label => (
-                                    <div key={label} className="text-[18px] font-bold text-black py-1.5 border-b md:border-b-0 md:pr-2">{label}</div>
+                        <div className="overflow-x-auto">
+                            <div className="inline-grid 2xl:w-[100%] xl:w-[100%] flg:w-[100%] w-[1300px]" style={{ gridTemplateColumns: `280px repeat(${itemsToDisplay.length}, minmax(200px, 1fr))` }}>
+                                <div className="font-semibold text-[18px] text-black bg-white sticky left-0 z-10">
+                                    {['Engine Make', 'Engine Model', 'Engine HP', 'Fuel Type'].map(label => (
+                                        <div key={label} className="text-[18px] font-bold text-black py-1.5  md:pr-2">{label}</div>
+                                    ))}
+                                </div>
+                                {itemsToDisplay.map((boat) => (
+                                    <div key={`engine-${boat.id}`} className="col-span-1 border-l border-gray-300 md:pl-6 text-gray-500">
+                                        <div className="py-1.5 text-[18px] px-10">{getMetaField(boat, '_yacht_engine_make')}</div>
+                                        <div className="py-1.5 text-[18px] px-10">{getMetaField(boat, '_yacht_engine_model')}</div>
+                                        <div className="py-1.5 text-[18px] px-10">{getMetaField(boat, '_yacht_engine_hp')}</div> {/* Corrected field */}
+                                        <div className="py-1.5 text-[18px] px-10">{getMetaField(boat, '_yacht_fuel_type')}</div>
+                                    </div>
+                                ))}
+                                {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
+                                    <div key={`engine-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 border-l md:pl-4">
+                                        {Array(4).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
+                                    </div>
                                 ))}
                             </div>
-                            {itemsToDisplay.map((boat) => (
-                                <div key={`engine-${boat.id}`} className="col-span-1 md:border-l border-gray-300 md:pl-6 text-sm text-gray-500">
-                                    <div className="py-1.5 border-b md:border-none text-[18px]">{getMetaField(boat, '_yacht_engine_make')}</div>
-                                    <div className="py-1.5 border-b md:border-none text-[18px]">{getMetaField(boat, '_yacht_engine_model')}</div>
-                                    <div className="py-1.5 border-b md:border-none text-[18px]">{getMetaField(boat, '_yacht_engine_hp')}</div> {/* Corrected field */}
-                                    <div className="py-1.5 text-[18px]">{getMetaField(boat, '_yacht_fuel_type')}</div>
-                                </div>
-                            ))}
-                            {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
-                                <div key={`engine-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 md:border-l md:pl-4">
-                                    {Array(4).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
-                                </div>
-                            ))}
                         </div>
                     </section>
 
                     {/* Specifications Section */}
                     <section className="border border-gray-300 rounded-xl p-10 md:p-10 bg-white">
                         <h2 className="text-[26px] font-semibold mb-[17px] text-black">Specifications</h2>
-                        <div className="grid grid-cols-[1fr] md:grid-cols-4 gap-x-4 gap-y-2">
-                            <div className="col-span-1 pb-2 md:pb-0">
-                                {['Length Overall (ft)', 'Beam (ft)'].map(label => (
-                                    <div key={label} className="text-[18px] font-bold text-black py-1.5 border-b md:border-b-0 md:pr-2">{label}</div>
+                        <div className="overflow-x-auto">
+                            <div className="inline-grid 2xl:w-[100%] xl:w-[100%] flg:w-[100%] w-[1300px]" style={{ gridTemplateColumns: `280px repeat(${itemsToDisplay.length}, minmax(200px, 1fr))` }}>
+                                <div className="font-semibold text-black bg-white sticky left-0 z-10">
+                                    {['Length Overall (ft)', 'Beam (ft)'].map(label => (
+                                        <div key={label} className="text-[18px] font-bold text-black py-1.5  md:pr-2">{label}</div>
+                                    ))}
+                                </div>
+                                {itemsToDisplay.map((boat) => (
+                                    <div key={`spec-${boat.id}`} className="col-span-1 border-l border-gray-300 md:pl-6 text-gray-500">
+                                        <div className="py-1.5 text-[18px] px-10">{getMetaField(boat, '_yacht_length_overall')}</div> {/* Corrected field */}
+                                        <div className="py-1.5 text-[18px] px-10">{getMetaField(boat, '_yacht_beam')}</div> {/* Corrected field */}
+                                    </div>
+                                ))}
+                                {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
+                                    <div key={`spec-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 md:border-l md:pl-4">
+                                        {Array(2).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
+                                    </div>
                                 ))}
                             </div>
-                            {itemsToDisplay.map((boat) => (
-                                <div key={`spec-${boat.id}`} className="col-span-1 md:border-l border-gray-300 md:pl-6 text-sm text-gray-500">
-                                    <div className="py-1.5 border-b md:border-none text-[18px]">{getMetaField(boat, '_yacht_length_overall')}</div> {/* Corrected field */}
-                                    <div className="py-1.5 text-[18px]">{getMetaField(boat, '_yacht_beam')}</div> {/* Corrected field */}
-                                </div>
-                            ))}
-                            {Array(Math.max(0, 3 - itemsToDisplay.length)).fill(null).map((_, idx) => (
-                                <div key={`spec-placeholder-${idx}`} aria-hidden="true" className="hidden md:block col-span-1 md:border-l md:pl-4">
-                                    {Array(2).fill(null).map((__, i) => <div key={i} className="text-sm py-1.5 text-gray-400">N/A</div>)}
-                                </div>
-                            ))}
                         </div>
                     </section>
                 </div>
