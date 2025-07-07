@@ -86,7 +86,7 @@ function HomeTop({ yacht }) {
   };
 
   return (
-    <div className="mt-[64px] mb-[66px] border-b border-[#0000004D] flex flex-col sm:flex-row justify-between gap-6 md:gap-0 pb-6 md:pb-[47px]">
+    <div className="mt-[64px] mb-[66px] border-b border-[#0000004D] flex flex-col sm:flex-row justify-between gap-6 md:gap-0 pb-[47px] md:pb-[47px]">
       {/* Left section: Boat Condition, Name, and ID */}
       <div className="flex flex-col gap-2 md:gap-3.5">
         {/* Only render the button if boatCondition is not "Condition Unknown" or empty */}
@@ -95,7 +95,7 @@ function HomeTop({ yacht }) {
             {boatCondition}
           </button>
         )}
-        <span className="font-medium text-[50px] md:text-4xl lg:text-5xl leading-[140%]">
+        <span className="font-medium text-[30px] md:text-[38px] lg:text-[50px] leading-[140%]">
           {yachtName}
         </span>
         <span className="text-base md:text-lg leading-[100%] font-normal text-[#000000A6]">

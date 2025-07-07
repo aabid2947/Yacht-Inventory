@@ -65,9 +65,9 @@ function PaginationControls({
           onClick={handlePrevPage}
           aria-label="Previous page"
           disabled={currentPage === 1}
-          className="flex items-center h-[40px] w-[40px] px-2 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
+          className="flex items-center h-[40px] w-[40px] justify-center px-2 py-1.5 border rounded-md text-sm hover:bg-gray-100 disabled:opacity-50"
         >
-          <ArrowLeft size={16} className="mr-1 stroke-black" /> 
+          <ArrowLeft size={16} className="stroke-black" /> 
         </button>
         <button
           onClick={handleNextPage}

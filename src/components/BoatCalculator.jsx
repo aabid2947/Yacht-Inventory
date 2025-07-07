@@ -136,7 +136,7 @@ function BoatCalculator({ msrp = initialMsrp }) {
 
   return (
     <div className="border rounded-[30px] border-[#00000033] p-6 md:p-8 lg:p-11 flex flex-col">
-      <h2 className="text-2xl md:text-3xl font-medium leading-[100%]">
+      <h2 className="text-[26px] md:text-[30px] font-medium leading-[100%]">
         Calculate your monthly boat payment
       </h2>
       <p className="text-base md:text-lg font-normal leading-[140%] md:leading-[100%] text-[#00000099] mt-4 md:mt-[26px]">
@@ -150,7 +150,7 @@ function BoatCalculator({ msrp = initialMsrp }) {
           ${formatCurrencyDisplay(currentMsrp)}
         </span>
       </div>
-      <div className="mt-8 md:mt-[54px] grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[54px]">
+      <div className="mt-8 md:mt-[54px] grid grid-cols-1 xl:grid-cols-2 gap-6 lg:gap-[54px]">
         <div>
           <BoatCalculatorLeft
             msrp={currentMsrp}

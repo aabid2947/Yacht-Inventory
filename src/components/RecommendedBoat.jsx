@@ -97,7 +97,7 @@ const BoatCard = ({ boat, imageUrl, onLayout, maxHeight, isSelected, onCardClick
       className="text-black rounded-none w-full cursor-pointer flex flex-col transition-all duration-300"
       onClick={() => onCardClick(boat)}
     >
-      <div className="flex flex-col items-start p-3 w-full bg-white rounded-[20px] shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex-grow">
+      <div className="flex flex-col items-start p-3 w-full bg-white rounded-[20px] border-[1px] border-[rgba(0,0,0,0.2)] duration-300 h-full flex-grow">
         <figure className="w-full relative">
           <img
             src={imageUrl || defaultImage}

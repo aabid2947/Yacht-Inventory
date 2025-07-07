@@ -55,26 +55,26 @@ function HomeMid({ yacht }) { // Accept yacht as a prop
   return (
     <section className="grid grid-cols-1 lg:grid-cols-7 gap-6 lg:gap-12 justify-between">
       {/* Left */}
-      <div className="lg:col-span-5 flex flex-col w-full">
+      <div className="2xl:col-span-5 lg:col-span-4 flex flex-col w-full">
         {characteristicsData.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 border-b border-[#0000004D] pb-8 md:pb-[60px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-3 md:gap-4 border-b border-[#0000004D] pb-8 md:pb-[60px]">
             {characteristicsData.map((e, index) => (
               <button // Consider if these should be non-interactive divs if they don't perform actions
                 key={index}
-                className="bg-[#274989] px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 rounded-lg xl:rounded-xl gap-2 sm:gap-3 md:gap-4 flex items-center w-full sm:w-auto transition-all duration-200 hover:bg-[#274989CC]"
+                className="bg-[#274989] h-[107px] px-3 sm:px-4 md:px-5 py-2 sm:py-3 md:py-4 rounded-lg xl:rounded-xl gap-[27px] flex items-center w-full sm:w-auto transition-all duration-200 hover:bg-[#274989CC]"
               >
                 <div className="flex-shrink-0 flex items-center justify-center">
                   <img
-                    className="h-7 w-7 sm:h-8 sm:w-8 md:h-10 md:w-10 lg:h-12 lg:w-12 xl:h-14 xl:w-14 2xl:h-16 2xl:w-16 p-1"
+                    className="h-[48px] w-[48px] p-1"
                     src={e.logo}
                     alt={e.name}
                   />
                 </div>
                 <div className="flex flex-col gap-0.5 sm:gap-1 ml-2 sm:ml-0 min-w-0 flex-1">
-                  <span className="font-normal text-xs sm:text-sm md:text-base text-[#FFFFFF80] text-start truncate">
+                  <span className="font-normal text-[22px] text-[#FFFFFF80] text-start truncate">
                     {e.name}
                   </span>
-                  <span className="font-normal text-sm sm:text-base md:text-lg text-[#FFFFFF] text-start truncate">
+                  <span className="font-normal text-[22px] text-[#FFFFFF] text-start truncate">
                     {e.des}
                   </span>
                 </div>
@@ -124,7 +124,7 @@ function HomeMid({ yacht }) { // Accept yacht as a prop
         </div>
       </div>
       {/* Right */}
-      <div className="lg:col-span-2 flex flex-col gap-6 md:gap-8">
+      <div className="2xl:col-span-2 lg:col-span-3 flex flex-col gap-6 md:gap-8">
         {showHotDeal && (
           <div className="w-full border border-[#00000033] p-4 md:p-6 lg:p-8 rounded-[22px] flex flex-col gap-3 md:gap-4 lg:gap-[18px]">
             <div className="flex items-center gap-4 md:gap-6 lg:gap-[30px]">

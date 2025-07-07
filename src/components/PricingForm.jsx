@@ -8,7 +8,7 @@ export default function PricingForm() {
           <p className="text-sm md:text-base text-[#000000A6] line-through truncate">
             MSRP: $1,325,275
           </p>
-          <span className="text-xl md:text-2xl font-semibold leading-tight truncate">
+          <span className="text-[35px] mt-[3px] font-medium leading-tight truncate">
             $120,000
           </span>
         </div>
@@ -19,10 +19,10 @@ export default function PricingForm() {
       </div>
 
       <div className="flex mb-6 md:mb-[34px]">
-        <button className="flex-1 py-3 md:py-[11px] text-sm sm:text-base md:text-lg lg:text-[20px] font-medium border-b-2 border-[#274989]">
+        <button className="flex-1 py-3 md:py-[11px] text-[20px] sm:text-base md:text-lg lg:text-[20px] font-medium border-b-4 border-[#274989]">
           Contact us
         </button>
-        <button className="flex-1 py-3 md:py-[11px] text-sm sm:text-base md:text-lg lg:text-[20px] font-medium border-b-2 border-[#0000001A] text-[#000000]">
+        <button className="flex-1 py-3 md:py-[11px] text-[20px] sm:text-base md:text-lg lg:text-[20px] font-medium border-b-4 border-[#0000001A] text-[#000000]">
           Request a tour
         </button>
       </div>
@@ -32,27 +32,32 @@ export default function PricingForm() {
           <input
             type="text"
             placeholder="*First name"
-            className="w-full py-3 md:py-3.5 px-4 md:px-5 rounded-[9px] border border-[#274989] text-base md:text-[18px] font-normal bg-[#ffffff]"
+            className="w-full py-[8px] h-[50px] px-4 md:px-5 rounded-[9px] focus-visible:border border-[#ffffff] 
+             focus-visible:border-[rgba(39,73,137,1)] focus-visible:ring-0 focus:outline-none text-base md:text-[18px] font-normal bg-[#ffffff]"
           />
           <input
             type="text"
             placeholder="*Last name"
-            className="w-full py-3 md:py-3.5 px-4 md:px-5 rounded-[9px] text-base md:text-[18px] font-normal bg-[#ffffff]"
+            className="w-full py-[8px] h-[50px] md:py-3.5 px-4 md:px-5 rounded-[9px] focus-visible:border border-[#ffffff] 
+             focus-visible:border-[rgba(39,73,137,1)] focus-visible:ring-0 focus:outline-none text-base md:text-[18px] font-normal bg-[#ffffff]"
           />
           <input
             type="text"
             placeholder="*Email address"
-            className="w-full py-3 md:py-3.5 px-4 md:px-5 rounded-[9px] text-base md:text-[18px] font-normal bg-[#ffffff]"
+            className="w-full py-[8px] h-[50px] md:py-3.5 px-4 md:px-5 rounded-[9px] focus-visible:border border-[#ffffff] 
+             focus-visible:border-[rgba(39,73,137,1)] focus-visible:ring-0 focus:outline-none text-base md:text-[18px] font-normal bg-[#ffffff]"
           />
           <input
             type="text"
             placeholder="*Postal code"
-            className="w-full py-3 md:py-3.5 px-4 md:px-5 rounded-[9px] text-base md:text-[18px] font-normal bg-[#ffffff]"
+            className="w-full py-[8px] h-[50px] md:py-3.5 px-4 md:px-5 rounded-[9px] focus-visible:border border-[#ffffff] 
+             focus-visible:border-[rgba(39,73,137,1)] focus-visible:ring-0 focus:outline-none text-base md:text-[18px] font-normal bg-[#ffffff]"
           />
           <input
             type="text"
             placeholder="*Phone number"
-            className="w-full py-3 md:py-3.5 px-4 md:px-5 rounded-[9px] text-base md:text-[18px] font-normal bg-[#ffffff]"
+            className="w-full py-[8px] h-[50px] md:py-3.5 px-4 md:px-5 rounded-[9px] focus-visible:border border-[#ffffff] 
+             focus-visible:border-[rgba(39,73,137,1)] focus-visible:ring-0 focus:outline-none text-base md:text-[18px] font-normal bg-[#ffffff]"
           />
         </div>
         <p className="text-base md:text-[18px] text-[#000000] leading-[140%] font-normal mt-6 md:mt-[41px]">
@@ -94,9 +99,9 @@ export default function PricingForm() {
         </button>
 
         <div className="flex items-center justify-start mt-6 md:mt-[30px] gap-4 md:gap-[21px]">
-          <div className="border border-[#0000004D] p-3 md:p-[12px] rounded-[8px]">
+          <div className="border h-[40px] w-[40px] border-[#0000004D] flex items-center justify-center rounded-[8px]">
             <img
-              className="h-8 w-8 md:h-[40px] md:w-[40px]"
+              className="h-[16px] w-[16px]"
               src={call}
               alt="Call icon"
             />

@@ -57,7 +57,7 @@ function Home() {
   // Assuming you still want to show "Recommended" which might be different yachts
   // If "Recommended" should also be dynamic based on the current yacht, you might need to adjust its logic/props too.
   return (
-    <section className="container mx-auto px-4"> {/* Added a container for better layout */}
+    <section className="mx-auto px-[15px] max-w-[1730px]"> {/* Added a container for better layout */}
       <HomeTop yacht={boatData} />
       <HomeMid yacht={boatData} />
       <RecommendedBoats currentYacht={boatData}/>

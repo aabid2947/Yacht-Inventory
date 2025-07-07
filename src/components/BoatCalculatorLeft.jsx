@@ -154,6 +154,7 @@ function BoatCalculatorLeft({
             textTransform: 'none',
             borderRadius: '8px',
             padding: '6px 12px',
+            fontSize: '18px',
             '&:hover': {
               borderColor: '#00000088',
               backgroundColor: '#f0f0f0'
@@ -174,6 +175,7 @@ function BoatCalculatorLeft({
             textTransform: 'none',
             borderRadius: '8px',
             padding: '6px 20px',
+            fontSize: '18px',
              '&:hover': {
               borderColor: '#00000088',
               backgroundColor: '#f0f0f0'

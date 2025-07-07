@@ -144,10 +144,10 @@ export default function Comparison() {
                                 <div className="font-semibold text-[18px] text-black bg-white sticky left-0 z-10">
                                     {['Make', 'Model', 'Year', 'Price', 'Type', 'Class', 'Hull Material', 'Identifier (Stock No.)'].map(label => (
                                         <div key={label} className="text-[18px] font-bold text-black py-1.5">{label}</div>
-                                    ))}
+                                    ))}?[L]
                                 </div>
                                 {itemsToDisplay.map((boat) => (
-                                    <div key={`desc-${boat.id}`} className="col-span-1 border-l border-gray-300 md:pl-6 text-gray-500">
+                                    <div key={`desc-${boat.id}`} className="col-span-1 border-l border-gray-300 md:pl-6                                                                                  B MN                                                            text-gray-500">
                                         <div className="py-1.5 text-[18px] px-10 truncate text-[rgba(0,0,0,0.65)]" title={getMetaField(boat, '_yacht_make')}>{getMetaField(boat, '_yacht_make')}</div>
                                         <div className="py-1.5 text-[18px] px-10 truncate text-[rgba(0,0,0,0.65)]" title={getMetaField(boat, '_yacht_model')}>{getMetaField(boat, '_yacht_model')}</div>
                                         <div className="py-1.5 text-[18px] px-10 text-[rgba(0,0,0,0.65)]">{getMetaField(boat, '_yacht_year')}</div>
